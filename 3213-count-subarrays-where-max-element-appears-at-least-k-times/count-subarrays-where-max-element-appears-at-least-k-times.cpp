@@ -1,6 +1,9 @@
 class Solution {
 public:
     long long countSubarrays(vector<int>& nums, int k) {
+        ios::sync_with_stdio(false);  
+        cin.tie(nullptr);            
+        cout.tie(nullptr); 
         int Max = *max_element(nums.begin(), nums.end());
         int l = 0, r = 0, sum = 0;
         long long ans = 0;
