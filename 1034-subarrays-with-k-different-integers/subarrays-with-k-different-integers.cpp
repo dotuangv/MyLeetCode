@@ -3,8 +3,9 @@ public:
     int subarraysWithKDistinct(vector<int>& nums, int k) {
         ios_base::sync_with_stdio(false);
         cin.tie(nullptr);
+        cout.tie(nullptr);
         unordered_map<int, int> mp, check;
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        queue<pair<int, int>> pq;
         int cnt = 0, l = 0, r = 0, ans = 0;
         while(r < nums.size())
         {
@@ -32,12 +33,12 @@ public:
                     {
                         while(1)
                         {
-                            if(mp[pq.top().second] == 0 || pq.top().first != check[pq.top().second])
+                            if(mp[pq.front().second] == 0 || pq.front().first != check[pq.front().second])
                             {
                                 pq.pop();
                             }else break;
                         }
-                        ans += pq.top().first - l + 1;
+                        ans += pq.front().first - l + 1;
                     }
                     r++;
                 }
@@ -50,12 +51,12 @@ public:
                 {
                     while(1)
                     {
-                        if(mp[pq.top().second] == 0 || pq.top().first != check[pq.top().second])
+                        if(mp[pq.front().second] == 0 || pq.front().first != check[pq.front().second])
                         {
                             pq.pop();
                         }else break;
                     }
-                    ans += pq.top().first - l + 1;
+                    ans += pq.front().first - l + 1;
                 }
                 r++;
             }
