@@ -5,7 +5,7 @@ public:
         cin.tie(nullptr);
         cout.tie(nullptr);
         unordered_map<int, int> mp, check;
-        queue<pair<int, int>> pq;
+        queue<pair<int, int>> q;
         int cnt = 0, l = 0, r = 0, ans = 0;
         while(r < nums.size())
         {
@@ -27,18 +27,18 @@ public:
                 {
                     mp[nums[r]]++;
                     cnt++;
-                    pq.push({r, nums[r]});
+                    q.push({r, nums[r]});
                     check[nums[r]] = r;
                     if(cnt == k)
                     {
                         while(1)
                         {
-                            if(mp[pq.front().second] == 0 || pq.front().first != check[pq.front().second])
+                            if(mp[q.front().second] == 0 || q.front().first != check[q.front().second])
                             {
-                                pq.pop();
+                                q.pop();
                             }else break;
                         }
-                        ans += pq.front().first - l + 1;
+                        ans += q.front().first - l + 1;
                     }
                     r++;
                 }
@@ -46,17 +46,17 @@ public:
             {
                 mp[nums[r]]++;
                 check[nums[r]] = r;
-                pq.push({r, nums[r]});
+                q.push({r, nums[r]});
                 if(cnt == k)
                 {
                     while(1)
                     {
-                        if(mp[pq.front().second] == 0 || pq.front().first != check[pq.front().second])
+                        if(mp[q.front().second] == 0 || q.front().first != check[q.front().second])
                         {
-                            pq.pop();
+                            q.pop();
                         }else break;
                     }
-                    ans += pq.front().first - l + 1;
+                    ans += q.front().first - l + 1;
                 }
                 r++;
             }
