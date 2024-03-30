@@ -1,6 +1,8 @@
 class Solution {
 public:
     int subarraysWithKDistinct(vector<int>& nums, int k) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
         unordered_map<int, int> mp, check;
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
         int cnt = 0, l = 0, r = 0, ans = 0;
