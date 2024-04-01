@@ -1,13 +1,13 @@
 class WordDictionary {
 public:
-    int trie[250005][26];
-    bool ok[250005];
+    int trie[200005][26];
+    bool ok[200005];
     int cnt = 0;
     WordDictionary() {
         std::ios_base::sync_with_stdio(false);
         std::cin.tie(nullptr);
         std::cout.tie(nullptr);
-        for(int i = 0; i < 250000; i++)
+        for(int i = 0; i < 200000; i++)
         {
             for(int j = 0; j < 26; j++)
             {
