@@ -4,6 +4,9 @@ public:
     bool ok[250005];
     int cnt = 0;
     WordDictionary() {
+        std::ios_base::sync_with_stdio(false);
+        std::cin.tie(nullptr);
+        std::cout.tie(nullptr);
         for(int i = 0; i < 250000; i++)
         {
             for(int j = 0; j < 26; j++)
