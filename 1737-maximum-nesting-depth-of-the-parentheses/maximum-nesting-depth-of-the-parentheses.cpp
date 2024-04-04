@@ -2,13 +2,13 @@ class Solution {
 public:
     int maxDepth(string s) {
         int ans = 0, cnt = 0;
-        for(int i = 0; i < s.size(); i++)
+        for(char i: s)
         {
-            if(s[i] == '(')
+            if(i == '(')
             {
                 cnt++;
                 ans = max(ans, cnt);
-            }else if(s[i] == ')')
+            }else if(i == ')')
             {
                 cnt--;
             }
