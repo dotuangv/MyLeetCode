@@ -2,26 +2,21 @@ class Solution {
 public:
     string makeGood(string s) {
         string ans = "";
-        stack<char> st;
+        // stack<char> st;
         for(int i = 0; i < s.size(); i++)
         {
-            if(!st.empty())
+            if(ans.size() != 0)
             {
-                if(st.top() + 32 == s[i] || st.top() == s[i] + 32)
+                if(ans.back() + 32 == s[i] || ans.back() == s[i] + 32)
                 {
-                    st.pop();
+                    ans.pop_back();
                 }else
                 {
-                    st.push(s[i]);
+                    ans += s[i];
                 }
-            }else st.push(s[i]);
+            }else ans += s[i];
         }
-        while(!st.empty())
-        {
-            ans += st.top();
-            st.pop();
-        }
-        reverse(ans.begin(), ans.end());
+        // reverse(ans.begin(), ans.end());
         return ans;
     }
 };
