@@ -20,7 +20,6 @@ public:
                 }
             }else star.push(i);
         }
-        cout << st.size() << " " << star.size() << "\n";
         while(!st.empty() && !star.empty())
         {
             if(star.top() < st.top()) return false;
