@@ -1,60 +1,74 @@
-class Solution {
-public:
-    int trie[300005][26];
-    int cnt = 0;
-    bool ok[300005];
-    int x[4] = {-1, 0, 0, 1};
-    int y[4] = {0, -1, 1, 0};
-    vector<vector<bool>> visit;
-    vector<string> ans;
-    void Insert(string &s)
-    {
-        int u = 0;
-        for(int i = 0; i < s.size(); i++)
-        {
-            int k = s[i] - 'a';
-            if(!trie[u][k]) trie[u][k] = ++cnt;
-            u = trie[u][k];
-        }
-        ok[u] = true;
-    }
+struct Trie {
+    Trie* child[26] = {0};
+    bool end = false;
+};
 
-    void Backtrack(int i, int j, int u, vector<vector<char>> &board, string s)
-    {
-        visit[i][j] = true;
-        int k = board[i][j] - 'a';
-        if(trie[u][k])
-        {
-            if(ok[trie[u][k]])
-            {
-                ok[trie[u][k]] = false;
-                ans.push_back(s + board[i][j]);
-            }
-                for(int l = 0; l < 4; l++)
-                {
-                    int ii = i + x[l];
-                    int jj = j + y[l];
-                    if(ii >= 0 && ii < board.size() && jj >= 0 && jj < board[ii].size() && !visit[ii][jj])
-                    {
-                        Backtrack(ii, jj, trie[u][k], board, s + board[i][j]);
-                        visit[ii][jj] = false;
-                    }
-                }
-        }else return;
-    }
-    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
-        for(int i = 0; i < words.size(); i++)
-            Insert(words[i]);
-        visit.resize(board.size(), vector<bool> (board[0].size()));
+class Solution
+{
+	public:
+		bool dfs(int i, int j, int k, vector<vector < char>> &board, string &search, int &row, int &col)
+		{
+			if (i == search.size())
+				return true;
+			if (j >= 0 and j < row and k >= 0 and k < col)
+			{
+				if (board[j][k] != search[i])
+					return false;
+				char realChild = board[j][k];
+				board[j][k] = '$';
+				bool ans = dfs(i + 1, j + 1, k, board, search, row, col) ||
+					dfs(i + 1, j - 1, k, board, search, row, col) ||
+					dfs(i + 1, j, k + 1, board, search, row, col) ||
+					dfs(i + 1, j, k - 1, board, search, row, col);
+				board[j][k] = realChild;
+				return ans;
+			}
+			else
+				return false;
+		}
+	vector<string> findWords(vector<vector < char>> &board, vector< string > &words)
+	{
+		int row = board.size();
+		int col = board[0].size();
+		vector<string> ans;
+		vector<vector<pair<int, int>>> vecp(27);
+		for (int i = 0; i < row; i++)
+		{
+			for (int j = 0; j < col; j++)
+				vecp[board[i][j] - 'a'].push_back({ i, j });
+		}
+		int start = 0;
+		int end = 0;
+		for (auto element: words)
+		{
+			if (element[0] == 'a')
+				start++;
+			if (element[element.size() - 1] == 'a')
+				end++;
+		}
+		bool checkReverse = false;
+		if (start > end)
+		{
+			checkReverse = true;
+			for (int i = 0; i < words.size(); i++)
+				reverse(words[i].begin(), words[i].end());
+		}
+		for (auto search: words)
+		{
+			bool flag = false;
+			for (auto element: vecp[search[0] - 'a'])
+			{
+				flag = dfs(0, element.first, element.second, board, search, row, col);
+				if (flag)
+				{
+					if (checkReverse)
+						reverse(search.begin(), search.end());
 
-        for(int i = 0; i < board.size(); i++)
-        {
-            for(int j = 0; j < board[i].size(); j++)
-            {
-                Backtrack(i, j, 0, board, "");
-                visit[i][j] = false;
-            }
-        }
-        return ans;
-    }
+					ans.push_back(search);
+					break;
+				}
+			}
+		}
+		return ans;
+	}
 };
