@@ -1,6 +1,8 @@
 class Solution {
 public:
     vector<vector<int>> findFarmland(vector<vector<int>>& land) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(NULL);
         vector<vector<int>> ans;
         vector<vector<pair<int, int>>> dp(land.size(), vector<pair<int, int>> (land[0].size()));
         for(int i = 0; i < land.size(); i++)
