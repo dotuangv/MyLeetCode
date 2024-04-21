@@ -15,6 +15,8 @@ public:
         return ok;
     }
     bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
+        ios::sync_with_stdio(0);
+        cin.tie(0); cout.tie(0);
         vector<vector<int>> path(n);
         for(auto x: edges)
         {
