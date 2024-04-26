@@ -26,11 +26,6 @@ public:
             if(j != Min1) Min[0][j] = grid[0][Min1];
             else Min[0][j] = grid[0][Min2];
         }
-        // for(int i = 0; i < grid.size(); i++)
-        // {
-        //     for(int j = 0; j < grid.size(); j++) cout << Min[i][j] << " ";
-        //     cout << "\n";
-        // }
         for(int i = 1; i < grid.size(); i++)
         {
             vector<int> dp(grid.size());
