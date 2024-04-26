@@ -43,7 +43,7 @@ public:
                 Min1 = 1;
                 Min2 = 0;
             }
-            for(int j = 0; j < grid.size(); j++)
+            for(int j = 2; j < grid.size(); j++)
             {
                 if(dp[j] < dp[Min1])
                 {
