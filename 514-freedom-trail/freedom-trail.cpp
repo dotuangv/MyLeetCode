@@ -1,41 +1,34 @@
-#include <vector>
-#include <string>
-#include <unordered_map>
-#include <algorithm>
-#include <climits>
-
-using namespace std;
-
 class Solution {
 public:
-    int findRotateSteps(string ring, string key) {
-        unordered_map<char, vector<int>> positions;
-        for (int i = 0; i < ring.size(); ++i) {
-            positions[ring[i]].push_back(i);
-        }
-        vector<vector<int>> memo(key.size(), vector<int>(ring.size(), -1));
-        return helper(0, 0, positions, key, ring, memo);
+    int dist(int size, int p, int t){
+        return min(abs(t - p), size - abs(t - p));
     }
-    
-    int helper(int in_index, int pos, unordered_map<char, vector<int>>& positions, string& key, string& ring, vector<vector<int>>& memo) {
-        if (in_index == key.size()) {
-            return 0;
+    int findRotateSteps(string ring, string key){
+        int m[26][100] = {{0}};
+        int cnt[26] = {0};
+        int dp[100][100] = {{0}};
+
+        const int rn = ring.size();
+        const int kn = key.size();
+        for(int i = 0; i < rn; ++i)
+            m[ring[i]-'a'][cnt[ring[i]-'a']++] = i;
+
+        for(int i = 0; i < cnt[key[0]-'a']; ++i){
+                dp[0][m[key[0]-'a'][i]] = dist(rn, 0, m[key[0]-'a'][i]) + 1;
         }
-        if (memo[in_index][pos] != -1) {
-            return memo[in_index][pos];
-        }
-        int min_steps = INT_MAX;
-        for (int i : positions[key[in_index]]) {
-            int steps;
-            if (i >= pos) {
-                steps = min(i - pos, static_cast<int>(pos + ring.size()) - i);
-            } else {
-                steps = min(pos - i, static_cast<int>(i + ring.size()) - pos);
+        for(int i = 1; i < kn; ++i){
+            for(int j = 0; j < cnt[key[i]-'a']; ++j){
+                int mini = INT_MAX;
+                for(int k = 0; k < cnt[key[i-1]-'a']; ++k){
+                    mini = min(mini, dp[i-1][m[key[i-1]-'a'][k]] + dist(rn, m[key[i]-'a'][j], m[key[i-1]-'a'][k]) + 1);
+                }
+                dp[i][m[key[i]-'a'][j]] = mini;
             }
-            int next_steps = helper(in_index + 1, i, positions, key, ring, memo);
-            min_steps = min(min_steps, steps + next_steps);
         }
-        memo[in_index][pos] = min_steps + 1;
-        return min_steps + 1;
+        int res = INT_MAX;
+        for(int i = 0; i < cnt[key.back()-'a']; ++i){
+            res = min(res, dp[kn-1][m[key[kn-1]-'a'][i]]);
+        }
+        return res;
     }
 };
