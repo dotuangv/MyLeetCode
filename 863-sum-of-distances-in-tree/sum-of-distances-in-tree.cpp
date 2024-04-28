@@ -1,44 +1,40 @@
 class Solution {
-private:
-    unordered_map<int, vector<int>> graph;
-    vector<int> count;
-    vector<int> res;
-
-    void dfs(int node, int parent) {
-        for (int child : graph[node]) {
-            if (child != parent) {
-                dfs(child, node);
-                count[node] += count[child];
-                res[node] += res[child] + count[child];
-            }
-        }
+    int head[30010], end[60010], next[60010], idx;
+    int siz[30010], n;
+    vector<int> ans;
+    void add (int a, int b) {
+        end[idx] = b, next[idx] = head[a], head[a] = idx++;
     }
-
-    void dfs2(int node, int parent) {
-        for (int child : graph[node]) {
-            if (child != parent) {
-                res[child] = res[node] - count[child] + (count.size() - count[child]);
-                dfs2(child, node);
-            }
-        }
-    }
-
 public:
     vector<int> sumOfDistancesInTree(int n, vector<vector<int>>& edges) {
-        graph.clear();
-        count = vector<int>(n, 1);
-        res = vector<int>(n, 0);
-
-        for (auto& edge : edges) {
-            int u = edge[0];
-            int v = edge[1];
-            graph[u].push_back(v);
-            graph[v].push_back(u);
+        memset(head, -1, 4 * n + 4);
+        for (auto &edge : edges) {
+            int a = edge[0], b = edge[1];
+            add(a, b), add(b, a);
         }
-
+        this -> n = n;
+        this -> ans = vector<int> (n);
+        dfs(0, -1, 0);
         dfs(0, -1);
-        dfs2(0, -1);
-
-        return res;
+        return ans;
+    }
+    void dfs(int u, int pre, int level) {
+        ans[0] += level;
+        siz[u] = 1;
+        for (int e = head[u]; ~e; e = next[e]) {
+            int v = end[e];
+            if ((e ^ 1) != pre) {
+                dfs(v, e, level + 1);
+                siz[u] += siz[v];
+            }
+        }
+    }
+    void dfs(int u, int pre) {
+        for (int e = head[u]; ~e; e = next[e]) {
+            if ((e ^ 1) == pre) continue;
+            int v = end[e];
+            ans[v] = ans[u] + n - 2 * siz[v];
+            dfs(v, e);
+        }
     }
 };
