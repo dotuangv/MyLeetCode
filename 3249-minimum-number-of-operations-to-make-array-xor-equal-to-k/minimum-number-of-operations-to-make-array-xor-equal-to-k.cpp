@@ -1,6 +1,9 @@
 class Solution {
 public:
     int minOperations(vector<int>& nums, int k) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(NULL);
+        cout.tie(NULL);
         vector<vector<int>> bit(nums.size(), vector<int> (20));
         for(int i = 0; i < nums.size(); i++)
         {
