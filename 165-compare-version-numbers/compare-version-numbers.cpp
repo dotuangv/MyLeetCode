@@ -1,19 +1,52 @@
 class Solution {
 public:
-    static int compareVersion(string& v1, string& v2) {
-        const int n1=v1.size(), n2=v2.size();
-        int x1=0, x2=0;
-        for(int i=0, j=0; i<n1 || j<n2; i++, j++){
-            while(i<n1 && v1[i]!='.'){
-                x1=10*x1+(v1[i++]-'0');
+    int compareVersion(string a, string b) 
+    {
+        int n=a.length(), m=b.length(), i=0, j=0;
+        while(i<n && j<m)
+        {
+            long long int p=0, q=0;
+            while(i<n && a[i]!='.')
+            {
+                p=(p*10)+a[i]-'0';
+                i++;
             }
-            while(j<n2 && v2[j]!='.'){
-                x2=10*x2+(v2[j++]-'0');
+            while(j<m && b[j]!='.')
+            {
+                q=(q*10)+b[j]-'0';
+                j++;
             }
-            if (x1<x2) return -1;
-            else if (x1>x2) return 1;
-            x1=0;
-            x2=0;
+            if(p>q)
+                return 1;
+            else if(q>p)
+                return -1;
+            i++;
+            j++;
+        }
+
+        while(i<n)
+        {
+            long long int p=0;
+            while(i<n && a[i]!='.')
+            {
+                p= (p*10)+ (a[i]-'0');
+                i++;
+            }
+            if(p>0)
+                return 1;
+            i++;
+        }
+        while(j<m)
+        {
+            long long int p=0;
+            while(j<m && b[j]!='.')
+            {
+                p= (p*10)+ (b[j]-'0');
+                j++;
+            }
+            if(p>0)
+                return -1;
+            j++;
         }
         return 0;
     }
