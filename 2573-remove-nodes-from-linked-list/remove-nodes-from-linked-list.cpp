@@ -11,7 +11,9 @@
 class Solution {
 public:
     ListNode* removeNodes(ListNode* head) {
-        ios_base::sync_with_stdio(0);
+        std::ios_base::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+    std::cout.tie(nullptr);
         stack<int> st;
         while(head != NULL)
         {
