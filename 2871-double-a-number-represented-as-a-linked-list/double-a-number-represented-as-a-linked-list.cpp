@@ -9,29 +9,29 @@
  * };
  */
 class Solution {
+
+   int doubledLinkedList(ListNode* head){
+    ListNode* temp = head;
+    if(head == nullptr){
+        return 0;
+    }
+    int carry = doubledLinkedList(head->next);
+    int doubleVal = (temp->val)*2 + carry;
+    int remainder = doubleVal%10;
+    carry = doubleVal/10;
+    temp->val = remainder;
+    return carry;
+   }
+
+
 public:
     ListNode* doubleIt(ListNode* head) {
-        stack<int> st;
-        while(head != NULL)
-        {
-            st.push(head->val);
-            head = head -> next;
+        int final = doubledLinkedList(head);
+        if(final>0){
+            ListNode * newNode = new ListNode(final, nullptr);
+            newNode->next = head;
+            head = newNode;
         }
-        int tmp = 0;
-        ListNode *ans = NULL;
-        while(!st.empty())
-        {
-            tmp += st.top() * 2;
-            ListNode *res = new ListNode(tmp % 10, ans);
-            ans = res;
-            tmp /= 10;
-            st.pop();
-        }
-        if(tmp)
-        {
-            ListNode *res = new ListNode(tmp, ans);
-            ans = res;
-        }
-        return ans;
+        return head;
     }
 };
