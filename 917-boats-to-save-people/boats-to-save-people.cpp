@@ -10,14 +10,10 @@ public:
         {
             if(people[l] + people[r] <= limit)
             {
-                ans++;
-                r--;
                 l++;
-            }else
-            {
-                ans++;
-                r--;
             }
+            ans++;
+            r--;
         }
         return ans;
     }
