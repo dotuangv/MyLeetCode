@@ -1,30 +1,21 @@
 class Solution {
 public:
-
-    int ans = 0;
-    void backtrack(int i, int l, int k, vector<bool> &visit, vector<int> &nums, int XOR)
-    {
-        if(i == k)
-        {
-            ans += XOR;
-            return;
-        }
-        for(int j = l; j < nums.size(); j++)
-        {
-            if(!visit[j])
-            {
-                visit[j] = true;
-                backtrack(i + 1, j, k, visit, nums, XOR ^ nums[j]);
-                visit[j] = false;
-            }
-        }
-    }
     int subsetXORSum(vector<int>& nums) {
-        vector<bool> visit(nums.size());
-        for(int i = 1; i <= nums.size(); i++)
-        {
-            backtrack(0, 0, i, visit, nums, 0);
-        }
-        return ans;
+        return XORSum(nums, 0, 0); 
+    }
+
+private:
+    int XORSum(vector<int>& nums, int index, int currentXOR) {
+        // Return currentXOR when all elements in nums are already considered
+        if (index == nums.size()) return currentXOR;
+
+        // Calculate sum of subset xor with current element
+        int withElement = XORSum(nums, index + 1, currentXOR ^ nums[index]);
+
+        // Calculate sum of subset xor without current element
+        int withoutElement = XORSum(nums, index + 1, currentXOR);
+
+        // Return sum of xor totals
+        return withElement + withoutElement;
     }
 };
