@@ -1,24 +1,34 @@
 class Solution {
 public:
-    int a[26], b[26], ans = 0;
-    void solve(int idx, vector<string>& words, vector<int>& score) {
-        if (idx == words.size()) {
-            int sc = 0;
-            for (int i = 0; i < 26; i++) {
-                if (b[i] > a[i])return;
-                sc += score[i] * b[i];
-            }
-            ans = max(ans, sc);
-            return;
+    void solve(int i, int& n, vector<int>& mp, vector<int>& score, int& ans, int sum, vector<string>& words){
+        ans = max(ans, sum);
+
+        if(i >= n) return ;
+
+        vector<int> tempMap = mp;
+
+        int j = 0;
+        int sum2 = 0;
+
+        for(j = 0; j < words[i].length(); j++){
+            tempMap[words[i][j] - 'a']--;
+            sum2+= score[words[i][j] - 'a'];
+            if(tempMap[words[i][j]-'a'] < 0) break;
         }
-        solve(idx + 1, words, score);
-        for (auto i : words[idx]) b[i - 'a']++;
-        solve(idx + 1, words, score);
-        for (auto i : words[idx]) b[i - 'a']--;
+
+        if( j == words[i].length()){
+            solve(i+1, n, tempMap, score, ans, sum + sum2, words);
+        }
+        solve(i+1, n, mp, score, ans, sum, words);
     }
     int maxScoreWords(vector<string>& words, vector<char>& letters, vector<int>& score) {
-        for (auto i : letters) a[i - 'a']++;
-        solve(0, words, score);
+        vector<int> mp(26, 0);
+        for(char i : letters){
+            mp[i - 'a']++;
+        }
+        int ans = 0;
+        int n = words.size();
+        solve(0, n, mp, score, ans, 0, words);
         return ans;
     }
 };
