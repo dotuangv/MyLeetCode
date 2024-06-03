@@ -1,16 +1,19 @@
 class Solution {
 public:
     int appendCharacters(string s, string t) {
-        int s_index = 0, t_index = 0;
-        int s_length = s.length(), t_length = t.length();
-    
-        while (s_index < s_length && t_index < t_length) {
-            if (s[s_index] == t[t_index]) {
-                t_index++;
+        std::ios_base::sync_with_stdio(false);
+        std::cin.tie(NULL);
+        int n = s.size();
+        int m = t.size();
+        int j = 0;
+        for(int i=0;i<n && j<m;i++)
+        {
+            if(t[j]==s[i])
+            {
+                j++;
             }
-            s_index++;
+           
         }
-    
-        return t_length - t_index;
+        return m-j;
     }
 };
