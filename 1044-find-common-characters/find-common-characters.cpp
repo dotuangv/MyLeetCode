@@ -12,7 +12,7 @@ public:
         }
         for(int i = 0; i < 26; i++)
         {
-            int t = 1e9;
+            int t = 100;
             for(int j = 0; j < words.size(); j++)
             {
                 t = min(t, vt[j][i]);;
