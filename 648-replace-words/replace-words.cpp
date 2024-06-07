@@ -37,6 +37,9 @@ public:
     }
 
     string replaceWords(vector<string>& dictionary, string sentence) {
+        ios::sync_with_stdio(0);
+        cin.tie(0);
+        cout.tie(0);
         for(int i = 0; i < dictionary.size(); i++)
         {
             insert(dictionary[i]);
