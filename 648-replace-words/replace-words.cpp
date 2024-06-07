@@ -18,19 +18,13 @@ public:
     string query(string &s)
     {
         int u = 0;
+        string res = "";
         for(int i = 0; i < s.size(); i++)
         {
             int k = s[i] - 'a';
-            if(ok[u])
-            {
-                string res = "";
-                for(int j = 0; j < i; j++) res += s[j];
-                return res;
-            }
-            if(!trie[u][k])
-            {
-                return s;
-            }
+            if(ok[u]) return res;
+            res.push_back(s[i]);
+            if(!trie[u][k]) return s;
             u = trie[u][k];
         }
         return s;
@@ -51,6 +45,7 @@ public:
                 res += sentence[i];
                 i++;
             }
+            // ans.append(query(res) + ' ');
             ans += query(res) + ' ';
             i++;
         }
