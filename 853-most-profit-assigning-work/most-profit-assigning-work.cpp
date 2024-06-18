@@ -1,20 +1,38 @@
 class Solution {
 public:
-    int maxProfitAssignment(vector<int>& dif, vector<int>& pro, vector<int>& worker) {
-        unordered_map<int, int> mp;
-        int MAX = worker[0];
-        for(auto &x: worker) MAX = max(MAX, x);
-        for(int i = 0; i < dif.size(); i++)
-        {
-            mp[dif[i]] = max(mp[dif[i]], pro[i]);
+    int maxProfitAssignment(vector<int>& difficulty, vector<int>& profit,
+                            vector<int>& worker) {
+        vector<pair<int, int>> jobProfile;
+        jobProfile.push_back({0, 0});
+        for (int i = 0; i < difficulty.size(); i++) {
+            jobProfile.push_back({profit[i], difficulty[i]});
         }
-        vector<int> Max(MAX + 1);
-        for(int i = 1; i <= MAX; i++)
-        {
-            Max[i]  = max(Max[i - 1], mp[i]);
+
+        // Sort in decreasing order of profit.
+        sort(jobProfile.begin(), jobProfile.end());
+        reverse(jobProfile.begin(), jobProfile.end());
+        for (int i = 0; i < jobProfile.size() - 1; i++) {
+            jobProfile[i + 1].second =
+                min(jobProfile[i].second, jobProfile[i + 1].second);
         }
-        int ans =  0;
-        for(auto &x: worker) ans += Max[x];
-        return ans;
+
+        int netProfit = 0;
+        for (int i = 0; i < worker.size(); i++) {
+            int ability = worker[i];
+            // Maximize profit using binary search.
+            int l = 0, r = jobProfile.size() - 1, jobProfit = 0;
+            while (l <= r) {
+                int mid = (l + r) / 2;
+                if (jobProfile[mid].second <= ability) {
+                    jobProfit = max(jobProfit, jobProfile[mid].first);
+                    r = mid - 1;
+                } else {
+                    l = mid + 1;
+                }
+            }
+            // Add profit of each worker to total profit.
+            netProfit += jobProfit;
+        }
+        return netProfit;
     }
 };
