@@ -1,38 +1,62 @@
 class Solution {
 public:
-    int maxProfitAssignment(vector<int>& difficulty, vector<int>& profit,
-                            vector<int>& worker) {
-        vector<pair<int, int>> jobProfile;
-        jobProfile.push_back({0, 0});
-        for (int i = 0; i < difficulty.size(); i++) {
-            jobProfile.push_back({profit[i], difficulty[i]});
-        }
+Solution(){
+ios::sync_with_stdio(0);
+cout.tie(0);
+cin.tie(0);
+}
+    int maxProfitAssignment(vector<int>& difficulty, vector<int>& profit, vector<int>& worker) {
+        /*
+        int diffmax = INT_MIN,workermax = INT_MIN;
+        for(int i : difficulty)
+        if(i> diffmax)
+        diffmax = i;
+        for(int i: worker)
+        if(i>workermax)
+        workermax = i;
 
-        // Sort in decreasing order of profit.
-        sort(jobProfile.begin(), jobProfile.end());
-        reverse(jobProfile.begin(), jobProfile.end());
-        for (int i = 0; i < jobProfile.size() - 1; i++) {
-            jobProfile[i + 1].second =
-                min(jobProfile[i].second, jobProfile[i + 1].second);
-        }
+       int countMax = diffmax > workermax? diffmax:workermax;
+       vector<int>  countArr(countMax+1); 
+       for(int i = 0; i < difficulty.size(); ++i)
+       {
+        if(profit[i] > countArr[difficulty[i]])
+       countArr[difficulty[i]] = profit[i]; 
+       }
+       for(int i =0;i<countArr.size()-1;++i)
+       {
+        if(countArr[i+1]==0)
+       countArr[i+1] = countArr[i]; 
+       else if(countArr[i+1]<countArr[i])
+       countArr[i+1] = countArr[i];
+       }
+       int sum = 0;
+       for(int i = 0; i<worker.size();++i)
+       {
+        sum += countArr[worker[i]] ;
+       }
+return sum;
+*/
+struct{
+bool operator() (const pair<int,int> first, const pair<int,int> second)  const
+{
+   return first.first < second.first; 
+}
+}cmp;
+vector <pair<int,int>> jobs;
+for(int i = 0; i<difficulty.size();++i)
+jobs.push_back({difficulty[i],profit[i]});;
+ranges::sort(jobs,cmp);
+ranges::sort(worker);
+int best = 0;
+int sum = 0;
+int i = 0;
+for(int w: worker)
+{
+    while(i < jobs.size() && jobs[i].first <= w)
+    best = max(best,jobs[i++].second);
+    sum += best;
 
-        int netProfit = 0;
-        for (int i = 0; i < worker.size(); i++) {
-            int ability = worker[i];
-            // Maximize profit using binary search.
-            int l = 0, r = jobProfile.size() - 1, jobProfit = 0;
-            while (l <= r) {
-                int mid = (l + r) / 2;
-                if (jobProfile[mid].second <= ability) {
-                    jobProfit = max(jobProfit, jobProfile[mid].first);
-                    r = mid - 1;
-                } else {
-                    l = mid + 1;
-                }
-            }
-            // Add profit of each worker to total profit.
-            netProfit += jobProfit;
-        }
-        return netProfit;
+}
+return sum;
     }
 };
