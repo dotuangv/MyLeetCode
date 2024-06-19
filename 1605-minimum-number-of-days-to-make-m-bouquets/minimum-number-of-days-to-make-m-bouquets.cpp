@@ -18,7 +18,7 @@ public:
     int minDays(vector<int>& bloomDay, int m, int k) {
         ios::sync_with_stdio(0);
         cin.tie(0);
-        int l = 1, r = 1e9;
+        int l = 1, r = *max_element(bloomDay.begin(), bloomDay.end());;
         while(r > l + 1)
         {
             int mid = (l + r)/2;
