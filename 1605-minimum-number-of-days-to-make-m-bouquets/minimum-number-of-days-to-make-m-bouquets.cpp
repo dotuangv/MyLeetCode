@@ -16,6 +16,8 @@ public:
         return sum >= m;
     }
     int minDays(vector<int>& bloomDay, int m, int k) {
+        ios::sync_with_stdio(0);
+        cin.tie(0);
         int l = 1, r = 1e9;
         while(r > l + 1)
         {
