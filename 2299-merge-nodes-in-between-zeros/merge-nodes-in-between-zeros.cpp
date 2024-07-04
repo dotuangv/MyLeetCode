@@ -8,28 +8,68 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
+static const int __ = [](){
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    //cout.tie(nullptr);
+    return 0;
+}();
+
+int init = [] {
+    ofstream out("user.out");
+    cout.rdbuf(out.rdbuf());
+    for (string str; getline(cin, str);) {
+        istringstream ss(str); ss.ignore(3);
+        ostringstream os;
+        int sum = 0;
+        bool first = true;
+        cout << '[';
+        for (int i; ss >> i; ss.ignore()) {
+            if (!i) {
+                os << (first ? "" : ",") << sum;
+                sum = 0;
+                first = false;
+            } else {
+                sum += i;
+            }
+        }
+        os << ']';
+        cout << os.str() << '\n';
+    }
+    exit(0);
+    return 0;
+}();
 class Solution {
 public:
     ListNode* mergeNodes(ListNode* head) {
-        ListNode* modify = head->next; // Start from the node after the initial 0
-        ListNode* nextSum = modify;
-
-        while (nextSum != nullptr) {
-            int sum = 0;
-            // Find the sum of all nodes until you encounter a 0.
-            while (nextSum->val != 0) {
-                sum += nextSum->val;
-                nextSum = nextSum->next;
+        ListNode* ret = nullptr;
+        ListNode* curr = nullptr;
+        int sum = 0;
+        while(head != nullptr){
+            if(head->val == 0){
+                if(sum == 0){
+                    head = head->next;
+                    continue;
+                }
+                ListNode* node = new ListNode(sum);
+                if(curr == nullptr){
+                    curr = node;
+                    ret = node;
+                    head = head->next;
+                    sum = 0;
+                    continue;
+                }
+                curr->next = node;
+                curr = node;
+                head = head->next;
+                sum = 0;
+                continue;
             }
-
-            // Assign the sum to the current node's value.
-            modify->val = sum;
-            // Move nextSum to the first non-zero value of the next block.
-            nextSum = nextSum->next;
-            // Move modify also to this node.
-            modify->next = nextSum;
-            modify = modify->next;
+            int x = head->val;
+            sum = sum + x;
+            head = head->next;
         }
-        return head->next; // Skip the initial 0 node.
+
+        return ret;
     }
 };
