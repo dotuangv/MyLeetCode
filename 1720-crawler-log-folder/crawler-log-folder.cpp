@@ -6,7 +6,7 @@ public:
         {
             if(logs[i][0] == '.')
             {
-                if(logs[i].size() == 3) ans = max(0, ans - 1);
+                if(logs[i][1] == '.') ans = max(0, ans - 1);
             }else
             {
                 ans++;
