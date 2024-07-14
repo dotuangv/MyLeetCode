@@ -1,72 +1,94 @@
-class Solution {
+class Solution 
+{
+    struct Element
+    {
+        string el;
+        int count;
+    };
 public:
     string countOfAtoms(string formula) {
-        int n = formula.length();
-        unordered_map<string, int> result_counter;
-        stack<unordered_map<string, int>> parenthesis_stack;
-        int cur_ind = 0;
-
-        while (cur_ind < n) {
-            char cur_char = formula[cur_ind];
-
-            if (cur_char == '(') {
-                cur_ind++;
-                parenthesis_stack.push(unordered_map<string, int>());
-                continue;
+        
+        vector<Element> form{};
+        
+        auto num = 0;
+        for (auto r = 0; r < std::size(formula); r++)
+        {
+            if (formula[r] == '(')
+            {
+                form.push_back({"(", 0});
             }
-
-            if (cur_char == ')') {
-                string mult_str = "";
-                cur_ind++;
-
-                while (cur_ind < n && isdigit(formula[cur_ind])) {
-                    mult_str += formula[cur_ind];
-                    cur_ind++;
-                }
-
-                int mult = mult_str.empty() ? 1 : stoi(mult_str);
-                unordered_map<string, int> last_counter = parenthesis_stack.top();
-                parenthesis_stack.pop();
-                unordered_map<string, int>& target = parenthesis_stack.empty() ? result_counter : parenthesis_stack.top();
-                
-                for (const auto& [elem, counter] : last_counter) {
-                    target[elem] += counter * mult;
-                }
-                continue;
+            else if (formula[r] == ')')
+            {
+                form.push_back({")", 0});
             }
-
-            string cur_elem = "";
-            string cur_counter_str = "";
-            unordered_map<string, int>& target = parenthesis_stack.empty() ? result_counter : parenthesis_stack.top();
-
-            while (cur_ind < n && formula[cur_ind] != '(' && formula[cur_ind] != ')') {
-                if (isalpha(formula[cur_ind])) {
-                    if (isupper(formula[cur_ind]) && !cur_elem.empty()) {
-                        target[cur_elem] += cur_counter_str.empty() ? 1 : stoi(cur_counter_str);
-                        cur_elem = "";
-                        cur_counter_str = "";
-                    }
-                    cur_elem += formula[cur_ind];
-                } else {
-                    cur_counter_str += formula[cur_ind];
+            else if (isdigit(formula[r]))
+            {
+                auto num = formula[r] - '0';
+                while (r+1 < std::size(formula) && isdigit(formula[r+1]))
+                {
+                    num = num*10+(formula[++r]-'0');
                 }
-                cur_ind++;
+                auto& prev = form.back();
+                if (prev.count == 1)
+                {
+                    prev.count = 0;
+                }
+                form.back().count += num;
             }
-
-            target[cur_elem] += cur_counter_str.empty() ? 1 : stoi(cur_counter_str);
+            else if (isupper(formula[r]))
+            {
+                string element = {};
+                element += formula[r];
+                while (r+1 < std::size(formula) && islower(formula[r+1]))
+                {
+                    element += formula[++r];
+                }
+                form.push_back({element, 1});
+            }
         }
-
-        vector<string> parts;
-        for (const auto& [elem, counter] : result_counter) {
-            parts.push_back(elem + (counter == 1 ? "" : to_string(counter)));
+        
+        deque<int> open{};
+        
+        for (auto i = 0; i < std::size(form); i++)
+        {
+            if (form[i].el == "(")
+            {
+                open.push_back(i+1);
+            }
+            else if (form[i].el == ")")
+            {
+                if (form[i].count == 0)
+                {
+                    open.pop_back();
+                    continue;
+                }
+                auto multiplier = form[i].count;
+                auto start = open.back();
+                open.pop_back();
+                for(; start < i; start++)
+                {
+                    form[start].count*=multiplier;
+                }
+            }
         }
-        sort(parts.begin(), parts.end());
-
-        string result;
-        for (const auto& part : parts) {
-            result += part;
+        
+        map<string, int> elementCounts{};
+        for (auto& element: form)
+        {
+            if (element.el != "(" && element.el != ")")
+            {
+                elementCounts[element.el] += element.count;
+            }
         }
-
-        return result;
+        string output = {};
+        for (auto& [k, v] : elementCounts)
+        {
+            output += k;
+            if (v > 1)
+            {
+                output += to_string(v);
+            }
+        }
+        return output;
     }
 };
