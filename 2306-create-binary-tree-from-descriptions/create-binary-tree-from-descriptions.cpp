@@ -11,7 +11,7 @@
  */
 class Solution {
 public:
-    TreeNode* solve(int x, map<int, pair<int, int>> &mp)
+    TreeNode* solve(int x, unordered_map<int, pair<int, int>> &mp)
     {
         TreeNode *t = new TreeNode(x);
         if(mp[x].first == 0 && mp[x].second == 0) return t;
@@ -30,8 +30,8 @@ public:
     }
 
     TreeNode* createBinaryTree(vector<vector<int>>& descriptions) {
-        map<int, pair<int, int>> mp;
-        map<int, bool> mp2;
+        unordered_map<int, pair<int, int>> mp;
+        unordered_map<int, bool> mp2;
         for(auto &x: descriptions)
         {
             if(x[2]) mp[x[0]].first = x[1];
