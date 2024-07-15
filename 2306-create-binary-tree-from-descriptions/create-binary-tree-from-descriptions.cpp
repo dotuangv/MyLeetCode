@@ -9,49 +9,36 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
- auto _ = [](){
+#define MX 100001
+#pragma GCC optimize("03")
+#pragma GCC target ("avx")
+#pragma GCC target ("-fsplit-loops")
+TreeNode* Nodes[MX];
+TreeNode nodes[MX];
+int P[MX];
+int V[MX];
+int cnt = 0;
+int idx = 0;
+TreeNode* p;
+TreeNode* c;
+auto _ = [](){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL), cout.tie(NULL);
     return 0;
 }();
 class Solution {
 public:
-    TreeNode* solve(int x, unordered_map<int, pair<int, int>> &mp)
-    {
-        TreeNode *t = new TreeNode(x);
-        if(mp[x].first == 0 && mp[x].second == 0) return t;
-        else
-        {
-            if(mp[x].first != 0)
-            {
-                t->left = solve(mp[x].first, mp);
-            }
-            if(mp[x].second != 0)
-            {
-                t->right = solve(mp[x].second, mp);
-            }
-            return t;
+    TreeNode* createBinaryTree(const vector<vector<int>>& descriptions) {
+        while(cnt) Nodes[V[--cnt]] = nullptr, P[V[cnt]] = 0;
+        idx = cnt;
+        for(const vector<int> &desc : descriptions){
+            int a = desc[0], b = desc[1];
+            p = Nodes[a] ? Nodes[a] : (Nodes[a] = &(nodes[idx++] = TreeNode(V[cnt++] = a)));
+            c = Nodes[b] ? Nodes[b] : (Nodes[b] = &(nodes[idx++] = TreeNode(V[cnt++] = b)));
+            P[b] = a;
+            if(desc[2]) p -> left = c; else p -> right = c;
         }
-    }
-
-    TreeNode* createBinaryTree(vector<vector<int>>& descriptions) {
-        unordered_map<int, pair<int, int>> mp;
-        unordered_map<int, bool> mp2;
-        for(auto &x: descriptions)
-        {
-            if(x[2]) mp[x[0]].first = x[1];
-            else mp[x[0]].second = x[1];
-            mp2[x[1]] = true;
-        }
-        int head;
-        for(auto &x: mp)
-        {
-            if(!mp2[x.first])
-            {
-                head = x.first;
-                break;
-            }
-        }
-        return solve(head, mp);
+        for(const vector<int> &desc : descriptions) if(!P[desc[0]]) return Nodes[desc[0]];
+        return NULL;
     }
 };
