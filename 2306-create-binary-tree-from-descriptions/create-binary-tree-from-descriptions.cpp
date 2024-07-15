@@ -9,6 +9,11 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
+ auto _ = [](){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL), cout.tie(NULL);
+    return 0;
+}();
 class Solution {
 public:
     TreeNode* solve(int x, unordered_map<int, pair<int, int>> &mp)
