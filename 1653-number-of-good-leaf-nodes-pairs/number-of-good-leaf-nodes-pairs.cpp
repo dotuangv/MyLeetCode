@@ -1,37 +1,87 @@
-class Solution {
-public:
-    int countPairs(TreeNode* root, int distance) {
-        unordered_map<TreeNode*, vector<TreeNode*>> map;
-        vector<TreeNode*> leaves;
-        findLeaves(root, {}, leaves, map);
-        int res = 0;
-        for (int i = 0; i < leaves.size(); i++) {
-            for (int j = i + 1; j < leaves.size(); j++) {
-                vector<TreeNode*>& list_i = map[leaves[i]];
-                vector<TreeNode*>& list_j = map[leaves[j]];
-                for (int k = 0; k < min(list_i.size(), list_j.size()); k++) {
-                    if (list_i[k] != list_j[k]) {
-                        int dist = list_i.size() - k + list_j.size() - k;
-                        if (dist <= distance) res++;
-                        break;
-                    }
-                }
-            }
-        }
-        return res;
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+
+struct NodePos
+{
+    int64_t depth;
+    int64_t pos;
+};
+
+void dfs(TreeNode *node, std::vector<NodePos> &leaves, int64_t depth, int64_t pos)
+{
+    if(node->left != nullptr)
+    {
+        dfs(node->left, leaves, depth + 1, pos);
     }
 
-private:
-    void findLeaves(TreeNode* node, vector<TreeNode*> trail, vector<TreeNode*>& leaves, unordered_map<TreeNode*, vector<TreeNode*>>& map) {
-        if (!node) return;
-        vector<TreeNode*> tmp(trail);
-        tmp.push_back(node);
-        if (!node->left && !node->right) {
-            map[node] = tmp;
-            leaves.push_back(node);
-            return;
+    if(node->right != nullptr)
+    {
+        dfs(node->right, leaves, depth + 1, pos | (int64_t(1) << depth));
+    }
+
+    if(node->left == nullptr && node->right == nullptr)
+    {
+        // std::cout << ((depth)) << " " << pos;
+        // std::cout << std::endl;
+
+        NodePos p;
+        p.depth = depth;
+        p.pos = pos;
+        leaves.emplace_back(p);
+
+        // std::cout << depth << std::endl;
+    }
+}
+
+class Solution {
+public:
+    int countPairs(TreeNode* root, int distance)
+    {
+        std::vector<NodePos> leaves;
+
+        dfs(root, leaves, 0, 0);
+
+        int result = 0;
+
+        std::cout << "=========" << std::endl;
+
+        for(size_t i = 0; i < leaves.size() - 1; i++)
+        {
+            for(size_t j = i + 1; j < leaves.size(); j++)
+            {
+                auto fd = leaves[i].depth;
+                auto sd = leaves[j].depth;
+
+                auto fp = leaves[i].pos;
+                auto sp = leaves[j].pos;
+
+                auto min = std::min(fd, sd);
+
+                // std::cout << (int)fd << " " << (int)sd << std::endl;
+                // std::cout << (int64_t)fp << " " << (int64_t)sp << std::endl;
+
+                auto depthDiff = __builtin_ctzl(fp ^ sp);
+                
+                auto diff = (fd - depthDiff) + sd - depthDiff;
+
+                if(diff == 0 && fd != sd)
+                {
+                    diff = std::abs(fd - sd);
+                }
+
+                result += diff <= distance;
+            }
         }
-        findLeaves(node->left, tmp, leaves, map);
-        findLeaves(node->right, tmp, leaves, map);
+        return result;
+
     }
 };
