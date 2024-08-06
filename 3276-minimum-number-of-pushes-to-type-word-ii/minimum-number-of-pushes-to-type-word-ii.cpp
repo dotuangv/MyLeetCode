@@ -1,21 +1,20 @@
+#include <execution>
+auto f = [] {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    return 0;
+}();
 class Solution {
 public:
     int minimumPushes(string word) {
-        ios_base::sync_with_stdio(false);
-        cin.tie(nullptr);
-        unordered_map<char,int> mp;
-        for(auto x: word) mp[x]++;
-        vector<int> vt;
-        for(auto x: mp) vt.push_back(x.second);
-        sort(vt.begin(), vt.end(), greater<int> ());
-        int ans = 0;
-        for(int i = 0; i <= 3; i++)
-        {
-            for(int j = i*8; j < min(int(vt.size()), (i + 1)*8); j++)
-            {
-                ans += (i + 1)*vt[j];
-            }
+        array<int, 26> f {};
+        for (char c : word) {
+            f[c - 'a']++;
         }
-        return ans;
+        sort(execution::par_unseq, f.begin(), f.end(), greater{});
+        return transform_reduce(execution::par_unseq, f.begin(), f.end(), 0, plus{}, [f = &f[0]](int const& x) { 
+            int i = &x - f;
+            return x * (i / 8 + 1);
+        });
     }
 };
