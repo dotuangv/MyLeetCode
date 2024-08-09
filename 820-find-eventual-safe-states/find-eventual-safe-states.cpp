@@ -14,6 +14,9 @@ public:
     }
 
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        ios::sync_with_stdio(0);
+        cin.tie(0);
+        cout.tie(0);
         vector<bool> visited(graph.size());
         vector<bool> safe(graph.size());
         vector<int> ans;
