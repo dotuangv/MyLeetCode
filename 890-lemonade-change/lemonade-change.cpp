@@ -1,6 +1,7 @@
 class Solution {
 public:
     bool lemonadeChange(vector<int>& bills) {
+        ios::sync_with_stdio(false); cin.tie(nullptr);
         unordered_map<int, int> mp;
         for(auto &x: bills)
         {
