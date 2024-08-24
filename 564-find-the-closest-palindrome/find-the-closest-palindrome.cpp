@@ -1,6 +1,6 @@
 class Solution {
 public:
-    string nearestPalindromic(string numberStr) {
+    string nearestPalindromic(string n) {
         // if(n.size() == 1)
         // {
         //     n[0]--;
@@ -65,58 +65,39 @@ public:
         //     for(int i = 0; i < n.size() - 1; i++) ans.push_back('9');
         //     return ans;
         // }
+        if(n.length()==1)
+            return to_string(stoi(n)-1);
+        
+        int d = n.length();
+        vector<long> candidates;
+        candidates.push_back(pow(10,d-1)-1);
+        candidates.push_back(pow(10,d)+1);
 
-    long long number = stoll(numberStr);
-        
-        // Edge cases for small numbers
-        if (number <= 10) return to_string(number - 1);
-        if (number == 11) return "9";
-        
-        // Special case for 18-digit number with all 9s, thanks to dcodeDV for pointing this out
-        if (numberStr == "999999999999999999") {
-            return "1000000000000000001";
+        int mid = (d+1)/2;
+        long prefix = stol(n.substr(0,mid));
+        vector<long> v = {prefix,prefix+1, prefix-1};
+        for(long i : v)
+        {
+            string postfix = to_string(i);
+            if(d%2!=0)
+                postfix.pop_back();
+            reverse(postfix.begin(), postfix.end());
+            string c = to_string(i)+postfix;
+            candidates.push_back(stol(c));
         }
-        
-        int length = numberStr.length();
-        long long leftHalf = stoll(numberStr.substr(0, (length + 1) / 2));
-        
-        vector<long long> palindromeCandidates(5);
-        palindromeCandidates[0] = generatePalindromeFromLeft(leftHalf - 1, length % 2 == 0);
-        palindromeCandidates[1] = generatePalindromeFromLeft(leftHalf, length % 2 == 0);
-        
-        // Handle potential overflow for leftHalf + 1
-        if (leftHalf < 999999999) {
-            palindromeCandidates[2] = generatePalindromeFromLeft(leftHalf + 1, length % 2 == 0);
-        } else {
-            palindromeCandidates[2] = stoll("1" + string(length - 1, '0') + "1");
-        }
-        
-        palindromeCandidates[3] = pow(10, length - 1) - 1;
-        palindromeCandidates[4] = pow(10, length) + 1;
-        
-        long long nearestPalindrome = 0;
-        long long minDifference = LLONG_MAX;
-        
-        for (long long candidate : palindromeCandidates) {
-            if (candidate == number) continue;
-            long long difference = abs(candidate - number);
-            if (difference < minDifference || (difference == minDifference && candidate < nearestPalindrome)) {
-                minDifference = difference;
-                nearestPalindrome = candidate;
+        long mindiff = LONG_MAX;
+        long result;
+        long num = stol(n);
+        for(int i=0;i<5;i++)
+        {
+            if(candidates[i]!=num && abs(candidates[i]-num)<mindiff)
+            {
+                mindiff = abs(candidates[i]-num);
+                result = candidates[i];
             }
+            else if(abs(candidates[i]-num)==mindiff)
+                result = min(result, candidates[i]);
         }
-        
-        return to_string(nearestPalindrome);
-    }
-
-private:
-    long long generatePalindromeFromLeft(long long leftHalf, bool isEvenLength) {
-        long long palindrome = leftHalf;
-        if (!isEvenLength) leftHalf /= 10;
-        while (leftHalf > 0) {
-            palindrome = palindrome * 10 + leftHalf % 10;
-            leftHalf /= 10;
-        }
-        return palindrome;
+        return to_string(result);
     }
 };
