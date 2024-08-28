@@ -16,6 +16,9 @@ public:
     }
 
     int minReorder(int n, vector<vector<int>>& connections) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
         vector<vector<pair<int, bool>>> graph(n);
         for(auto x: connections)
         {
