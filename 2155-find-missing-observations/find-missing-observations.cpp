@@ -1,6 +1,9 @@
 class Solution {
 public:
     vector<int> missingRolls(vector<int>& rolls, int mean, int n) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
         mean = mean * (rolls.size() + n);
         int sum = 0;
         for(auto x: rolls) sum += x;
