@@ -11,6 +11,9 @@
 class Solution {
 public:
     ListNode* modifiedList(vector<int>& nums, ListNode* head) {
+            ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
         unordered_map<int, bool> mp;
         for(auto &x: nums) mp[x] = true;
         vector<int> ans;
