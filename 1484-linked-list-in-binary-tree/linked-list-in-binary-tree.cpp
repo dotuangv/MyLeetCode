@@ -19,27 +19,29 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
+int speedup = []{ios::sync_with_stdio(0); cin.tie(0); return 0;}();
+int seq[100], prv[100], N;
+
+bool dfs(TreeNode *r, int p) {
+    int v = r->val;
+    while (p >= 0 && seq[p] != v) p = prv[p];
+    ++p;
+    if (p == N || r->left && dfs(r->left, p) || r->right && dfs(r->right, p)) return true;
+    return false;
+}
+
 class Solution {
 public:
-    bool check(ListNode* head,TreeNode* root){
-        if(head->next==nullptr){
-            return true;
-        }
-        if(root->left && root->left->val==head->next->val && check(head->next,root->left)==true){
-            return true;
-        }
-        if(root->right&& root->right->val==head->next->val && check(head->next,root->right)==true){
-            return true;
-        }
-        return false;
-    }
     bool isSubPath(ListNode* head, TreeNode* root) {
-        if(!root){
-            return false;
+        int n = 0;
+        while (head) seq[n++] = head->val, head = head->next;
+        prv[0] = -1;
+        for (int i = 1; i < n; ++i) {
+            int p = prv[i-1], lst = seq[i-1];
+            while (p >= 0 && seq[p] != lst) p = prv[p];
+            prv[i] = p+1;
         }
-        if((root->val==head->val) && check(head,root)){
-            return true;
-        }
-        return isSubPath(head,root->left)||isSubPath(head,root->right);
+        N = n;
+        return dfs(root, 0);
     }
 };
