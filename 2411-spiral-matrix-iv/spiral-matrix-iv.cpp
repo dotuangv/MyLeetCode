@@ -11,6 +11,9 @@
 class Solution {
 public:
     vector<vector<int>> spiralMatrix(int m, int n, ListNode* head) {
+        ios::sync_with_stdio(false);
+        cin.tie(0);
+        cout.tie(0);
         vector<vector<int>> ans(m, vector<int> (n, -1));
         int l = 0, t = 0, r = n - 1, b = m - 1;
         while(head != NULL)
