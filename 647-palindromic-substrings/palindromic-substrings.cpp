@@ -48,9 +48,9 @@ public:
         int ans = 0;
         for(int i = 1; i < N; i++)
         {
-            ans += D_odd[i] + 1 + D_even[i];
+            ans += D_odd[i] + D_even[i];
         }
-        return ans + D_odd[N] + 1;
+        return ans + N;
 
     }
 };
