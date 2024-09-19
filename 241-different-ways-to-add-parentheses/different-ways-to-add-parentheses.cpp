@@ -1,22 +1,34 @@
 class Solution {
-public:
+public: 
+    map <string , vector <int>> memo ;
     vector<int> diffWaysToCompute(string expression) {
-        vector<int> res;
-        for (int i = 0; i < expression.size(); ++i) {
-            char oper = expression[i];
-            if (oper == '+' || oper == '-' || oper == '*') {
-                vector<int> s1 = diffWaysToCompute(expression.substr(0, i));
-                vector<int> s2 = diffWaysToCompute(expression.substr(i + 1));
-                for (int a : s1) {
-                    for (int b : s2) {
-                        if (oper == '+') res.push_back(a + b);
-                        else if (oper == '-') res.push_back(a - b);
-                        else if (oper == '*') res.push_back(a * b);
+        vector <int>result; 
+        if(memo.find(expression) !=memo.end()){
+            return memo[expression] ; 
+        }
+        for (int i = 0 ; i < expression.size() ; i++){
+            char c =expression[i]  ; 
+            if ( c=='+' || c=='-' || c=='*'){
+                vector <int> left = diffWaysToCompute(expression.substr(0,i)) ; 
+                vector <int> right =diffWaysToCompute( expression.substr(i+1 )   ) ; 
+            
+            for (auto num1 : left){
+                for (auto num2 : right){
+                    if (c == '-'){
+                        result.push_back(num1-num2) ; 
+                    }else if (c=='+'){
+                        result.push_back(num1+num2) ;
+                    }else {
+                        result.push_back(num1*num2) ; 
                     }
                 }
+            }                        
             }
         }
-        if (res.empty()) res.push_back(stoi(expression));
-        return res;
+        if (result.empty()){
+            result.push_back(stoi(expression)) ; 
+        }
+        memo[expression]=result ;
+        return result ;
     }
 };
