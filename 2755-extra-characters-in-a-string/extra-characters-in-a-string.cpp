@@ -1,7 +1,7 @@
 class Solution {
 public:
-    int trie[3000][26];
-    bool ok[3000];
+    int trie[2500][26];
+    bool ok[2500];
     int cnt = 0;
     void insert(string &word) {
         int u = 0;
