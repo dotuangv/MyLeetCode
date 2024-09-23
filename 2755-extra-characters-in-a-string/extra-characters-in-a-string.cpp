@@ -29,6 +29,7 @@ public:
     }
 
     int minExtraChar(string s, vector<string>& dictionary) {
+        std::ios_base::sync_with_stdio(false); std::cin.tie(nullptr);
         for(int i = 0; i < dictionary.size(); i++)
         {
             insert(dictionary[i]);
