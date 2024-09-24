@@ -1,69 +1,82 @@
+#pragma GCC optimize("O3", "unroll-loops")
 class TrieNode {
 public:
+    int data;
     TrieNode* children[10];
-    TrieNode() {
-        for (int i = 0; i < 10; ++i) {
-            children[i] = nullptr;
+    bool isTerminal;
+
+    TrieNode(int ch) {
+        data = ch;
+        for (int i = 0; i < 10; i++) { children[i] = NULL; }
+        isTerminal = false;
+    }
+};
+
+class Trie {
+    TrieNode* root;
+public:
+    Trie() {
+        root = new TrieNode(-1);
+    }
+
+    void insert(int data) {
+        TrieNode* node = root;
+        int divisor = 1;
+
+        while (data / divisor >= 10) {
+            divisor *= 10;
         }
+
+        while (divisor > 0) {
+            int digit = (data / divisor) % 10;
+            if (node->children[digit] == NULL) {
+                node->children[digit] = new TrieNode(digit);
+            }
+            node = node->children[digit];
+            divisor /= 10;
+        }
+        node->isTerminal = true;
+    }
+
+    int prefixLen(int data) {
+        TrieNode* node = root;
+        int length = 0;
+        int divisor = 1;
+
+        while (data / divisor >= 10) {
+            divisor *= 10;
+        }
+
+        while (divisor > 0) {
+            int digit = (data / divisor) % 10;
+            if (node->children[digit] == NULL) {
+                return length;
+            }
+            node = node->children[digit];
+            length++;
+            divisor /= 10;
+        }
+        return length;
     }
 };
 
 class Solution {
+    Trie* trie = new Trie();
 public:
-    TrieNode* root;
-
-    Solution() {
-        root = new TrieNode();
-    }
-
-    void insert(vector<int> &number) {
-        TrieNode* node = root;
-        for (int i = number.size() - 1; i >= 0; i--) {
-            int k = number[i];
-            if (!node->children[k]) {
-                node->children[k] = new TrieNode();
-            }
-            node = node->children[k];
-        }
-    }
-
-    int search(vector<int> &number) {
-        TrieNode* node = root;
-        for (int i = number.size() - 1; i >= 0; i--) {
-            int k = number[i];
-            if (!node->children[k]) {
-                return number.size() - i - 1;
-            }
-            node = node->children[k];
-        }
-        return number.size();
-    }
-
     int longestCommonPrefix(vector<int>& arr1, vector<int>& arr2) {
         ios::sync_with_stdio(false);
         cin.tie(0);
         cout.tie(0);
 
-        // Insert arr1 into the trie
-        for (int i = 0; i < arr1.size(); i++) {
-            vector<int> number;
-            while (arr1[i]) {
-                number.push_back(arr1[i] % 10);
-                arr1[i] /= 10;
-            }
-            insert(number);
+        for (const int& num : arr1) {
+            trie->insert(num);
         }
 
-        // Search arr2 and find the longest common prefix
-        int ans = 0;
-        for (int i = 0; i < arr2.size(); i++) {
-            vector<int> number;
-            while (arr2[i]) {
-                number.push_back(arr2[i] % 10);
-                arr2[i] /= 10;
-            }
-            ans = max(ans, search(number));
+        int maxLen = 0;
+        for (const int& num : arr2) {
+            maxLen = max(trie->prefixLen(num), maxLen);
         }
-        return ans;
+
+        return maxLen;
     }
 };
