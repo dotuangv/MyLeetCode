@@ -23,6 +23,9 @@ public:
         return number.size();
     }
     int longestCommonPrefix(vector<int>& arr1, vector<int>& arr2) {
+        ios::sync_with_stdio(false);
+        cin.tie(0);
+        cout.tie(0);
         for(int i = 0; i < arr1.size(); i++)
         {
             vector<int> number;
