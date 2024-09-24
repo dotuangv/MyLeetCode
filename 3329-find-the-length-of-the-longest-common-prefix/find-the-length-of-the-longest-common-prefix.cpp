@@ -1,47 +1,64 @@
+class TrieNode {
+public:
+    TrieNode* children[10];
+    TrieNode() {
+        for (int i = 0; i < 10; ++i) {
+            children[i] = nullptr;
+        }
+    }
+};
+
 class Solution {
 public:
-    int trie[60000][10];
-    int cnt = 0;
+    TrieNode* root;
+
+    Solution() {
+        root = new TrieNode();
+    }
+
     void insert(vector<int> &number) {
-        int u = 0;
-        for(int i = number.size() - 1; i >= 0; i--)
-        {
+        TrieNode* node = root;
+        for (int i = number.size() - 1; i >= 0; i--) {
             int k = number[i];
-            if(!trie[u][k]) trie[u][k] = ++cnt;
-            u = trie[u][k];
+            if (!node->children[k]) {
+                node->children[k] = new TrieNode();
+            }
+            node = node->children[k];
         }
     }
 
     int search(vector<int> &number) {
-        int u = 0;
-        for(int i = number.size() - 1; i >= 0; i--)
-        {
+        TrieNode* node = root;
+        for (int i = number.size() - 1; i >= 0; i--) {
             int k = number[i];
-            if(!trie[u][k]) return number.size() - i - 1;
-            u = trie[u][k];
+            if (!node->children[k]) {
+                return number.size() - i - 1;
+            }
+            node = node->children[k];
         }
         return number.size();
     }
+
     int longestCommonPrefix(vector<int>& arr1, vector<int>& arr2) {
         ios::sync_with_stdio(false);
         cin.tie(0);
         cout.tie(0);
-        for(int i = 0; i < arr1.size(); i++)
-        {
+
+        // Insert arr1 into the trie
+        for (int i = 0; i < arr1.size(); i++) {
             vector<int> number;
-            while(arr1[i])
-            {
+            while (arr1[i]) {
                 number.push_back(arr1[i] % 10);
                 arr1[i] /= 10;
             }
             insert(number);
         }
+
+        // Search arr2 and find the longest common prefix
         int ans = 0;
-        for(int i = 0; i < arr2.size(); i++)
-        {
+        for (int i = 0; i < arr2.size(); i++) {
             vector<int> number;
-            while(arr2[i])
-            {
+            while (arr2[i]) {
                 number.push_back(arr2[i] % 10);
                 arr2[i] /= 10;
             }
