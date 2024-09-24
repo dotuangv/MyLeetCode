@@ -1,4 +1,4 @@
-#pragma GCC optimize("O3", "unroll-loops")
+
 class TrieNode {
 public:
     int data;
