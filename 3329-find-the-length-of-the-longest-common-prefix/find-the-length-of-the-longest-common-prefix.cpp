@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int trie[450000][10];
+    int trie[60000][10];
     int cnt = 0;
     void insert(vector<int> &number) {
         int u = 0;
