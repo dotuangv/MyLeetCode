@@ -18,6 +18,12 @@ public:
         return ok;
     }
 };
+char speedUp = [] {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    return 'z';
+}();
 
 /**
  * Your MyCalendar object will be instantiated and called as such:
