@@ -1,120 +1,127 @@
-class MyCircularDeque {
+#pragma GCC optimize ("Ofast")
+#pragma GCC target ("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx")
+#pragma GCC optimize ("-ffloat-store")
+#pragma GCC optimize ("O3", "unroll-loops")
+auto _=[]()noexcept{ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);return 0;}();
+
+class Node{
 public:
-    vector<int> v;
-    int front, back, sizee, capacity;
+    int data;
+    Node* prev;
+    Node* next;
+
+    Node(){
+        this->data = 0;
+        this->prev = NULL;
+        this->next = NULL;
+    }
+
+
+    Node(int x){
+        this->data = x;
+        this->prev = NULL;
+        this->next = NULL;
+    }
+
+};
+
+class MyCircularDeque {
+    Node* left = new Node(-1);
+    Node* right = new Node(-1);
+    int size = 0, capacity = 0;
+public:
+    
+    void remove(Node* temp){
+
+        // Remove the node from between
+        temp->prev->next = temp->next;
+        temp->next->prev = temp->prev;
+        temp->next = NULL;
+        temp->prev = NULL;
+
+
+    }
+
+    void add(Node* dummy, Node* temp){
+
+        dummy->prev->next = temp;
+        temp->prev = dummy->prev;
+        temp->next = dummy;
+        dummy->prev = temp;
+
+    }
 
     MyCircularDeque(int k) {
-        v = vector<int>(k, -1);
-        front = 0;
-        back = 0;
-        sizee = 0; // Keeps track of the current number of elements
+        left->next = right;
+        right->prev = left;
         capacity = k;
     }
-
+    
     bool insertFront(int value) {
-        if (isFull()) {
-            return false;
-        }
+        
+        if(isFull()) return false;
 
-        // Way - 01
-        if (front == 0) {
-            front = capacity - 1; // Wrap around to the end
-        } 
-        else {
-            front--; // Simply decrement front
-        }
-
-        // Way  - 02
-        // front--;
-        // front = capacity + front;
-        // front %= capacity;
-
-        v[front] = value;
-
-        sizee++;
+        Node* element = new Node(value);
+        add(left->next, element);
+        size++;
         return true;
     }
-
+    
     bool insertLast(int value) {
-        if (isFull()) {
-            return false;
-        }
+        if(isFull()) return false;
 
-        v[back] = value;
-
-        // Way - 01
-        if (back == capacity - 1) {
-            back = 0; // Wrap around to the beginning
-        } 
-        else {
-            back++; // Simply increment back
-        }
-
-        // Way - 02
-        // back++;
-        // back %= capacity;
-
-        sizee++;
+        Node* element = new Node(value);
+        add(right, element);
+        size++;
         return true;
     }
-
+    
     bool deleteFront() {
-        if (isEmpty()) {
-            return false;
-        }
-
-        v[front] = -1;
-
-        // Way - 01
-        if (front == capacity - 1) {
-            front = 0; // Wrap around to the beginning
-        } 
-        else {
-            front++; // Simply increment front
-        }
+        if(isEmpty()) return false;
         
-        // Way - 02
-        // front++;
-        // front %= capacity;
-
-        sizee--;
+        remove(left->next);
+        size--;
         return true;
     }
-
+    
     bool deleteLast() {
-        if (isEmpty()) {
-            return false;
-        }
+        if(isEmpty()) return false;
 
-        if (back == 0) {
-            back = capacity - 1; // Wrap around to the end
-        } 
-        else 
-        {
-            back--; // Simply decrement back
-        }
-        v[back] = -1;
-        
-        sizee--;
+        remove(right->prev);
+        size--;
         return true;
     }
-
+    
     int getFront() {
-        if (isEmpty()){return -1;}
-        return v[front];
-    }
+        if(isEmpty()) return -1;
 
+        return left->next->data;
+    }
+    
     int getRear() {
-        if (isEmpty()){return -1;} 
-        if (back == 0) {
-            return v[capacity - 1]; // Wrap around to the last valid element
-        } 
-        else {
-            return v[back - 1]; // Get the last element
-        }
+        if(isEmpty()) return -1;
+
+        return right->prev->data;
     }
-
-    bool isEmpty() { return (sizee == 0); }
-
-    bool isFull() { return (sizee == capacity); }
+    
+    bool isEmpty() {
+        return size == 0;
+    }
+    
+    bool isFull() {
+        return size == capacity;
+    }
 };
+
+/**
+ * Your MyCircularDeque object will be instantiated and called as such:
+ * MyCircularDeque* obj = new MyCircularDeque(k);
+ * bool param_1 = obj->insertFront(value);
+ * bool param_2 = obj->insertLast(value);
+ * bool param_3 = obj->deleteFront();
+ * bool param_4 = obj->deleteLast();
+ * int param_5 = obj->getFront();
+ * int param_6 = obj->getRear();
+ * bool param_7 = obj->isEmpty();
+ * bool param_8 = obj->isFull();
+ */
