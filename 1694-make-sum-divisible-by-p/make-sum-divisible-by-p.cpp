@@ -9,22 +9,24 @@ public:
     int minSubarray(vector<int>& nums, int p) {
         int n = nums.size();
         unordered_map<int, int> mp;
-        vector<int> pre(n + 1);
+        int S = 0;
         for(int i = 0; i < n; i++)
         {
-            pre[i + 1] = pre[i] + nums[i];
-            pre[i + 1] %= p;
+            S += nums[i];
+            S %= p;
         }
 
-        int ans = n;
+        int ans = n, s = 0;
         for(int i = 1; i <= n; i++)
         {
-            if(pre[i] % p == 0) ans = min(ans, n - i);
-            if((pre[n] - pre[i] + p) % p == 0) ans = min(ans, i);
-            int x = (pre[n] - pre[i] + p) % p;
+            s += nums[i - 1];
+            s %= p;
+            int x = (S - s + p) % p;
             int y = mp[p - x];
+            if(s % p == 0) ans = min(ans, n - i);
+            if(x == 0) ans = min(ans, i);
             if(y != 0) ans = min(ans, i - y);
-            mp[pre[i]] = i;
+            mp[s] = i;
 
         }
         return ans == n ? -1 : ans;
