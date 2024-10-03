@@ -22,10 +22,9 @@ public:
             s += nums[i - 1];
             s %= p;
             int x = (S - s + p) % p;
-            int y = mp[p - x];
             if(s % p == 0) ans = min(ans, n - i);
             if(x == 0) ans = min(ans, i);
-            if(y != 0) ans = min(ans, i - y);
+            if(mp.contains(p - x)) ans = min(ans, i - mp[p - x]);
             mp[s] = i;
 
         }
