@@ -1,36 +1,42 @@
 class Solution {
 public:
     int smallestChair(vector<vector<int>>& times, int targetFriend) {
-        int n = times.size();
+        ios_base::sync_with_stdio(0);
+        cin.tie(0);
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        priority_queue<int,vector<int>,greater<int>> chairs;
 
-        vector<int> order(n);
-        for (int i = 0; i < n; ++i) order[i] = i;
-
-        sort(order.begin(), order.end(), [&times](int a, int b) {
-            return times[a][0] < times[b][0];
-        });
-
-        priority_queue<int, vector<int>, greater<int>> emptySeats;
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> takenSeats;
-
-        for (int i = 0; i < n; ++i) emptySeats.push(i);
-
-        for (int i : order) {
-            int arrival = times[i][0], leave = times[i][1];
-
-            while (!takenSeats.empty() && takenSeats.top().first <= arrival) {
-                emptySeats.push(takenSeats.top().second);
-                takenSeats.pop();
+        targetFriend = times[targetFriend][0];
+        sort(times.begin(),times.end());
+        int start = 0;
+        int ans = 0;
+        
+        for(int i=0;;i++){
+            
+            int at = times[i][0];
+            int ct = times[i][1];
+            
+            while(!pq.empty() and pq.top().first<=at){
+                chairs.push(pq.top().second);
+                pq.pop();
             }
 
-            int seat = emptySeats.top();
-            emptySeats.pop();
+            if(!chairs.empty()){
+                ans = chairs.top();
+                chairs.pop();
+            }
+            else{
+                ans = start;
+                start++; 
+            }
+            pq.push({ct,ans});
+            if(at==targetFriend){
+                break;
+            }
 
-            if (i == targetFriend) return seat;
-
-            takenSeats.push({leave, seat});
         }
+        return ans;
 
-        return -1;  
+        
     }
 };
