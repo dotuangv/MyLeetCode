@@ -1,41 +1,24 @@
 class Solution {
 public:
     vector<int> smallestRange(vector<vector<int>>& nums) {
-        // Min-Heap: stores (value, list index, element index)
-        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> minHeap;
-        int curMax = numeric_limits<int>::min();
+        vector<pair<int, int>> ordered; // (number, group)
+        for (size_t k = 0; k < nums.size(); ++k)
+            for (auto n: nums[k]) ordered.push_back({n, k});
+        sort(ordered.begin(), ordered.end());
 
-        // Initialize the heap with the first element of each list
-        for (int i = 0; i < nums.size(); i++) {
-            minHeap.push({nums[i][0], i, 0});
-            curMax = max(curMax, nums[i][0]);
-        }
-        // Track the smallest range
-        vector<int> smallRange = {0, numeric_limits<int>::max()};
-
-        while (!minHeap.empty()) {
-            // Get the minimum element from the heap
-            vector<int> curr = minHeap.top();
-            minHeap.pop();
-            int curMin = curr[0], listIdx = curr[1], elemIdx = curr[2];
-
-            // Update the smallest range if a better one is found
-            if ((curMax - curMin < smallRange[1] - smallRange[0]) ||
-                (curMax - curMin == smallRange[1] - smallRange[0] && curMin < smallRange[0])) {
-                smallRange[0] = curMin;
-                smallRange[1] = curMax;
-            }
-
-            // Move to the next element in the same list
-            if (elemIdx + 1 < nums[listIdx].size()) {
-                int nextVal = nums[listIdx][elemIdx + 1];
-                minHeap.push({nextVal, listIdx, elemIdx + 1});
-                curMax = max(curMax, nextVal);
-            } else {
-                // If any list is exhausted, stop
-                break;
+        int i = 0, k = 0;
+        vector<int> ans;
+        unordered_map<int, int> count;
+        for (size_t j = 0; j < ordered.size(); ++j) {
+            if (! count[ordered[j].second]++) ++k;
+            if (k == nums.size()) { 
+                while (count[ordered[i].second] > 1) --count[ordered[i++].second]; // minialize range
+                if (ans.empty() || ans[1] - ans[0] > ordered[j].first - ordered[i].first) {
+                    ans = vector<int>{ordered[i].first, ordered[j].first};
+                }
             }
         }
-        return smallRange;
+
+        return ans;
     }
 };
