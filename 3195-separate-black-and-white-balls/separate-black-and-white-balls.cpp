@@ -1,8 +1,9 @@
 class Solution {
 public:
     long long minimumSteps(string s) {
-        long long ans = 0;
-        long long cnt = 0;
+        ios::sync_with_stdio(0);
+        cin.tie(0);
+        long long ans = 0, cnt = 0;
         for(int i = 0; i < s.size(); i++)
         {
             if(s[i] == '1') cnt++;
