@@ -2,12 +2,10 @@ class Solution {
 public:
 
     int ans = 0;
-    void backtrack(int i, string &s, map<string, int> &mp)
+    void backtrack(int i, string &s, int res, map<string, int> &mp)
     {
         if(i == s.size())
         {
-            int res = 0;
-            for(auto x: mp) if(x.second != 0) res++;
             ans = max(ans, res);
             return; 
         }
@@ -16,14 +14,15 @@ public:
         {
             str.push_back(s[j]);
             mp[str]++;
-            backtrack(j + 1, s, mp);
+            if(mp[str] == 1) backtrack(j + 1, s, res + 1, mp);
+            else backtrack(j + 1, s, res, mp);
             mp[str]--;
         }
     }
 
     int maxUniqueSplit(string s) {
         map<string, int> mp;
-        backtrack(0, s, mp);
+        backtrack(0, s, 0, mp);
         return ans;
     }
 };
