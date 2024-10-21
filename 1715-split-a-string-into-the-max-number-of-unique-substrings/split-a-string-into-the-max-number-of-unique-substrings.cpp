@@ -2,7 +2,7 @@ class Solution {
 public:
 
     int ans = 0;
-    void backtrack(int i, string &s, int res, map<string, int> &mp)
+    void backtrack(int i, string &s, int res, unordered_map<string, int> &mp)
     {
         if(i == s.size())
         {
@@ -21,7 +21,7 @@ public:
     }
 
     int maxUniqueSplit(string s) {
-        map<string, int> mp;
+        unordered_map<string, int> mp;
         backtrack(0, s, 0, mp);
         return ans;
     }
