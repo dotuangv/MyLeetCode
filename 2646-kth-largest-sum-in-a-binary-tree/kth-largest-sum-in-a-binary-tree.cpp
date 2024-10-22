@@ -25,8 +25,8 @@ public:
             if(t.first->left != NULL) q.push({t.first->left, t.second + 1});
             if(t.first->right != NULL) q.push({t.first->right, t.second + 1});
         }
-        sort(ans.begin(), ans.end(), greater<long long>());
         if(k > ans.size()) return -1;
+        sort(ans.begin(), ans.end(), greater<long long>());
         return ans[k - 1];
     }
 };
