@@ -7,65 +7,23 @@ auto init = []() {
     std::cin.tie(0);
     return 0;
 } ();
+
 class Solution {
 public:
+    vector<string> removeSubfolders(vector<string>& folder) const {
+        std::sort(folder.begin(), folder.end());
 
-    struct TreeNode{
-        unordered_map<string, TreeNode*> child;
-        bool ok;
-        bool stop;
-        TreeNode(){
-            ok = false;
-            stop = false;
-        }
-    };
-    TreeNode *root;
+        std::vector<std::string> ans; ans.reserve(folder.size());
+        ans.push_back(std::move(folder.front()));
 
-    void build(string &s)
-    {
-        TreeNode *node = root;
-        int i = 0;
-        while(i < s.size())
-        {
-            string res = "";
-            res.push_back(s[i++]);
-            while(i < s.size() && s[i] != '/') res.push_back(s[i++]);
-            if(!node->child[res]) node->child[res] = new TreeNode();
-            node = node->child[res];
-        }   
-        node->ok = true;
-    }
-
-    string search(string &s)
-    {
-        TreeNode *node = root;
-        string result = "";
-        int i = 0;
-        while(i < s.size())
-        {
-            string res = "";
-            res.push_back(s[i++]);
-            while(i < s.size() && s[i] != '/') res.push_back(s[i++]);
-            node = node->child[res];
-            result += res;
-            if(node->stop) return "";
-            if(node->ok) {
-                node->stop = true;
-                return result;
+        size_t i{1};
+        while(i < folder.size()) {
+            if (!folder[i].starts_with(ans.back()+'/')) {
+                ans.push_back(std::move(folder[i]));
             }
+            ++i;
         }
-        return result;
-    }
 
-    vector<string> removeSubfolders(vector<string>& folder) {
-        root = new TreeNode();
-        for(int i = 0; i < folder.size(); i++) build(folder[i]);
-        vector<string> ans;
-        for(int i = 0; i < folder.size(); i++)
-        {
-            string s = search(folder[i]);
-            if(s != "") ans.push_back(s);
-        }
         return ans;
     }
 };
