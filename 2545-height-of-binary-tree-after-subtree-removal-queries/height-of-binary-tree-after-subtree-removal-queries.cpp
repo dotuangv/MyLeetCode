@@ -100,6 +100,9 @@ public:
 
 
     vector<int> treeQueries(TreeNode* root, vector<int>& queries) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
         dp.resize(100001);
         ans.resize(100001, 0);
         bfs(root);
