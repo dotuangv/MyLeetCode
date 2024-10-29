@@ -2,6 +2,7 @@ class Solution {
 public:
     int maxMoves(vector<vector<int>>& grid) {
         vector<vector<int>> dp(grid.size(), vector<int> (grid[0].size()));
+        int ans = 0;
         for(int j = 1; j < grid[0].size(); j++)
         {
             int res = 0;
@@ -13,13 +14,8 @@ public:
                 res = max(dp[i][j], res);
                 // cout << dp[i][j] << " ";
             }
-            // cout << "\n";
+            ans = max(ans, res);
             if(res != j) break;
-        }
-        int ans = 0;
-        for(int i = 0; i < grid.size(); i++)
-        {
-            for(int j = 0; j < grid[0].size(); j++) ans = max(ans, dp[i][j]);
         }
         return ans;
     }
