@@ -2,7 +2,7 @@
 class Solution {
 public:
     int MOD = 1e9 + 7;
-    vector<vector<ll>> Mul(vector<vector<ll>> vt1, vector<vector<ll>> vt2)
+    vector<vector<ll>> Mul(vector<vector<ll>> &vt1, vector<vector<ll>> vt2)
     {
         vector<vector<ll>> result(26, vector<ll> (26));
         for(int i = 0; i < 26; i++)
@@ -19,7 +19,7 @@ public:
         return result;
     }
 
-    vector<vector<ll>> pow(int n, vector<vector<ll>> vt)
+    vector<vector<ll>> pow(int n, vector<vector<ll>> &vt)
     {
         vector<vector<ll>> result(26, vector<ll> (26));
         for(int i = 0; i < 26; i++) result[i][i] = 1;
