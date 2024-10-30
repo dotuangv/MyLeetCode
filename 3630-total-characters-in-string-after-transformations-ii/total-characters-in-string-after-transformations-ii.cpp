@@ -36,7 +36,6 @@ public:
     }
 
     int lengthAfterTransformations(string s, int t, vector<int>& nums) {
-        int MOD = 1e9 + 7;
         vector<vector<ll>> vt1(26, vector<ll> (26));
         for(auto x: s) vt1[x - 'a'][x - 'a']++;
         vector<vector<ll>> vt2(26, vector<ll> (26));
