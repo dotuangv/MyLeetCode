@@ -7,8 +7,7 @@ public:
         ans.push_back(s[1]);
         for(int j = 2; j < s.size(); j++)
         {
-            if(s[j] != s[j - 1]) ans.push_back(s[j]);
-            else if(s[j] != s[j - 2]) ans.push_back(s[j]);
+            if(s[j] != s[j - 1] || s[j] != s[j - 2]) ans.push_back(s[j]);
         }
         return ans;
     }
