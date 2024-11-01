@@ -1,14 +1,14 @@
 class Solution {
 public:
     string makeFancyString(string s) {
-        if(s.size() <= 2) return s;
-        string ans = "";
-        ans.push_back(s[0]);
-        ans.push_back(s[1]);
-        for(int j = 2; j < s.size(); j++)
-        {
-            if(s[j] != s[j - 1] || s[j] != s[j - 2]) ans.push_back(s[j]);
-        }
-        return ans;
+    if(s.length()<3) {
+        return s;
     }
+    int j = 2;
+    for (int i = 2; i < s.size(); ++i)
+        if (s[i] != s[j - 1] || s[i] != s[j - 2])
+            s[j++] = s[i];
+    s.resize(j);
+    return s;
+}
 };
