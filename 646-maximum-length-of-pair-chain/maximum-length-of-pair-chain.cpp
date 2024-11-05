@@ -2,7 +2,7 @@ class Solution {
 public:
     int findLongestChain(vector<vector<int>>& pairs) {
         sort(pairs.begin(), pairs.end());
-        vector<int> dp(pairs.size());
+        int dp[pairs.size()];
         dp[0] = 1;
         int ans = 1;
         for(int i = 1; i < pairs.size(); i++)
