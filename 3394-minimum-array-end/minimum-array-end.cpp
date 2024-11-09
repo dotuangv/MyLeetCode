@@ -1,6 +1,7 @@
 class Solution {
 public:
     long long minEnd(int n, int x) {
+        if(n == 1) return x;
         bitset<64> a(x), b(n - 1);
         vector<int> vt;
         for(int i = 0; i < 64; i++)
