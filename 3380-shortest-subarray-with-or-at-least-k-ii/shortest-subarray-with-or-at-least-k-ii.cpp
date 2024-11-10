@@ -1,38 +1,33 @@
 class Solution {
 public:
     int minimumSubarrayLength(vector<int>& nums, int k) {
-        vector<int> count(32, 0);
-        int start = 0, end = 0, minLength = INT_MAX;
-
-        while (end < nums.size()) {
-            updateBits(count, nums[end], 1);
-            while (start <= end && getVal(count) >= k) {
-                minLength = min(minLength, end - start + 1);
-                updateBits(count, nums[start], -1);
-                start++;
-            }
-            end++;
+        if (k == 0) {
+            return 1;
         }
-
-        return minLength == INT_MAX ? -1 : minLength;
-    }
-
-private:
-    void updateBits(vector<int>& count, int num, int val) {
-        for (int i = 0; i < 32; i++) {
-            if ((num >> i) & 1) {
-                count[i] += val;
+        int shortest = nums.size() + 1;
+        int count[32] = {};
+        int val = 0;
+        int start = 0;
+        for (int i = 0; i < nums.size(); ++i) {
+            int num = nums[i];
+            val |= num;
+            for (int ibit = 0; num; ++ibit) {
+                count[ibit] += num & 1;
+                num >>= 1;
             }
-        }
-    }
-
-    int getVal(const vector<int>& count) {
-        int ans = 0;
-        for (int i = 0; i < 32; i++) {
-            if (count[i] > 0) {
-                ans |= (1 << i);
+            while (val >= k && start < nums.size()) {
+                shortest = min(shortest, i - start + 1);
+                num = nums[start];
+                ++start;
+                for (int ibit = 0; num; ++ibit) {
+                    count[ibit] -= num & 1;
+                    if (count[ibit] == 0) {
+                        val &= ~(1 << ibit);
+                    }
+                    num >>= 1;
+                }
             }
         }
-        return ans;
+        return shortest == (nums.size() + 1) ? -1 : shortest;
     }
 };
