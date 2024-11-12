@@ -22,7 +22,8 @@ public:
     }
 
     int maxEnvelopes(vector<vector<int>>& envelopes) {
-        int n = 100000;
+        int n = 0;
+        for(auto x: envelopes) n = max(n, x[1]);
         st.resize(4 * n, 0);
         sort(envelopes.begin(), envelopes.end());
         int ans = 1, i = 0;
