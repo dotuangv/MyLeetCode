@@ -25,19 +25,14 @@ public:
         int n = 0;
         for(auto x: envelopes) n = max(n, x[1]);
         st.resize(4 * n, 0);
-        sort(envelopes.begin(), envelopes.end());
-        int ans = 1, i = 0;
-        while(i < envelopes.size()){
-            vector<vector<int>> vt;
-            int j = envelopes[i][0];
-            while(i < envelopes.size() && envelopes[i][0] == j){
-                vt.push_back({envelopes[i][1], get(0, 0, n - 1, 0, envelopes[i][1] - 1) + 1});
-                i++;
-            }
-            for(j = 0; j < vt.size(); j++){
-                ans = max(ans, vt[j][1]);
-                update(0, 0, n - 1, vt[j][0], vt[j][1]);
-            }
+        sort(envelopes.begin(), envelopes.end(), [](vector<int> &a, vector<int> &b) {
+            return a[0] == b[0] ? a[1] > b[1] : a[0] < b[0];
+        });
+        int ans = 1;
+        for(int i = 0; i < envelopes.size(); i++){
+            int x = get(0, 0, n - 1, 0, envelopes[i][1] - 1);
+            ans = max(x + 1, ans);
+            update(0, 0, n - 1, envelopes[i][1], x + 1);
         }
         return ans;
     }
