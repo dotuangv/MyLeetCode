@@ -1,15 +1,12 @@
 class Solution {
 public:
 
-    bool isGood(int x, int n, vector<int> q){
-        int i = 0, j = 0;
-        while(j < n){
-            if(q[i] == 0) i++;
-            if(i == q.size()) return true;
-            q[i] = max(0, q[i] - x);
-            j++;
+    bool isGood(int x, int n, vector<int> &q){
+        int res = 0;
+        for(int i = 0; i < q.size(); i++){
+            res += q[i]/x + (q[i]%x != 0);
         }
-        return q.back() == 0;
+        return res <= n;
     }
 
     int minimizedMaximum(int n, vector<int>& q) {
