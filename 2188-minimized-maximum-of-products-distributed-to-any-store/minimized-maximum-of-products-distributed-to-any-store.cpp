@@ -10,10 +10,7 @@ public:
     }
 
     int minimizedMaximum(int n, vector<int>& q) {
-        int l = 1, r = 1;
-        for(int i=0;i<q.size();i++) {
-            r = max(r, q[i]);
-        }
+        int l = 1, r = 100000;
         while(r > l + 1){
             int mid = (l + r)/2;
             if(isGood(mid, n, q)) r = mid;
