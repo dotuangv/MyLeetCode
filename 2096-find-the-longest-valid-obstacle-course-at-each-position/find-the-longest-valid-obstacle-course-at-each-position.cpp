@@ -1,34 +1,48 @@
 class Solution {
 public:
-    vector<int> st;
-
-    void update(int id, int l, int r, int pos, int val){
-        if(r < pos || l > pos) return;
-        if(l == r){
-            st[id] = max(st[id], val);
-            return;
-        }
-        int mid = (l + r)/2;
-        update(id * 2 + 1, l, mid, pos, val);
-        update(id * 2 + 2, mid + 1, r, pos, val);
-        st[id] = max(st[id*2 + 1], st[id*2 + 2]);
-    }
-
-    int get(int id, int l, int r, int u, int v){
-        if(r < u || l > v) return 0;
-        if(u <= l && r <= v) return st[id];
-        int mid = (l + r)/2;
-        return max(get(id*2 + 1, l, mid, u, v), get(id*2 + 2, mid + 1, r, u, v));
-    }
-
     vector<int> longestObstacleCourseAtEachPosition(vector<int>& obstacles) {
-        int n = *max_element(obstacles.begin(), obstacles.end()) + 1;
-        vector<int> ans(obstacles.size());
-        st.resize(4*n);
-        for(int i = 0; i < obstacles.size(); i++){
-            int res = get(0, 0, n - 1, 0, obstacles[i]) + 1;
-            ans[i] = res; 
-            update(0, 0, n - 1, obstacles[i], res);
+        const int size{static_cast<int>(obstacles.size())};
+        vector<int> ans(size,1);
+        array<int,100001> arr{};
+        arr[0] = obstacles[0];
+        int largest{arr[0]};
+        int smallest{arr[0]};
+        int length{1};
+        for (int i{1}; i<size; ++i) {
+            if (obstacles[i] >= largest) {
+                largest = obstacles[i];
+                arr[length] = largest;
+                ans[i] = length + 1;
+                ++length;
+            }
+            else if (obstacles[i] < smallest) {
+                smallest = obstacles[i];
+                arr[0] = smallest;
+                if (length == 1) {
+                    largest = smallest;
+                }
+            }
+            else {
+                int left{0};
+                int right{length};
+                while (true) {
+                    int ind{(left+right)/2};
+                    if (obstacles[i] < arr[ind]) {
+                        right = ind;
+                    }
+                    else if (obstacles[i] >= arr[ind+1]) {
+                        left = ind + 1;
+                    }
+                    else {
+                        arr[ind+1] = obstacles[i];
+                        if (ind+1 == length-1) {
+                            largest = obstacles[i];
+                        }
+                        ans[i] = ind + 2;
+                        break;
+                    }
+                }
+            }
         }
         return ans;
     }
