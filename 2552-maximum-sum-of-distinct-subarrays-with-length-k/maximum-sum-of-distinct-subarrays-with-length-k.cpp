@@ -13,7 +13,7 @@ public:
                     sum -= nums[l];
                     mp[nums[l++]]--;
                 }
-                if(r - l + 1 == k) ans = max(ans, sum);
+ 
             }else
             {
                 if(r - l + 1 == k) ans = max(ans, sum);
