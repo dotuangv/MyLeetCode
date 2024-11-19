@@ -16,14 +16,6 @@ public:
         sort(ev.begin(), ev.end(), [](vector<int> &a, vector<int> &b) {
             return a[0] == b[0] ? a[1] > b[1] : a[0] < b[0];
         });
-        // for(int i = 0; i < ev.size(); i++){
-        //     cout << ev[i][1] << " ";
-        // }
-        // cout << "\n";
-        // for(int i = 0; i < ev.size(); i++){
-        //     cout << ev[i][0] << "  ";
-        // }
-        // cout << "\n";
         vector<int> dp;
         dp.push_back(ev[0][1]);
         for(int i = 1; i < ev.size(); i++){
@@ -34,8 +26,6 @@ public:
                 int j = upper(ev[i][1], dp);
                 dp[j] = ev[i][1];
             }
-            // for(auto x: dp) cout << x << " ";
-            // cout << "\n";
         }
         return dp.size();
     }
