@@ -36,7 +36,10 @@ public:
         for(int i = n - 1; i >= 0; i--){
             update(A, B, C, s[i]);
             int x = max(0, k - A), y = max(0, k - B), z = max(0, k - C);
-            if(x == 0 && y == 0 && z == 0) ans = min(ans, n - i);
+            if(x == 0 && y == 0 && z == 0){
+                ans = min(ans, n - i);
+                break;
+            }
             int j = BS(x, 0, a);
             j = BS(y, j, b);
             j = BS(z, j, c);
