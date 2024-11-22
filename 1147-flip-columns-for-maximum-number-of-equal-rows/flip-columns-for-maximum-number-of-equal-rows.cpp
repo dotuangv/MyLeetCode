@@ -1,31 +1,20 @@
 class Solution {
 public:
-
-    int maxEqualRowsAfterFlips(vector<vector<int>>& matrix) {
-        int m = matrix.size(), n = matrix[0].size();
-        int ans = 0;
-        for(int i = 0; i < m; i++){
-            for(int j = 0; j < n; j++){
-                if(!matrix[i][j]) {
-                    for(int l = 0; l < m; l++){
-                        matrix[l][j] = !matrix[l][j];
-                    }
+    int maxEqualRowsAfterFlips(vector<vector<int>>& mat) {
+        int res = 0;
+        const int n = mat[0].size();
+        unordered_map<bitset<300>, int> freq;
+		for (auto& row : mat) {
+            bitset<300> same;
+            same.set(0);
+			for (int i = 1; i < row.size(); i++) {
+				if (row[0] != row[i]) {
+                    same.flip(i);
                 }
-            }
-            int res = 0;
-            for(int j = 0; j < m; j++){
-                bool ok = true;
-                for(int l = 0; l < n; l++){
-                    if(matrix[j][l] != matrix[j][0]){
-                        ok = false;
-                        break;
-                    }
-                }
-                if(ok) res++;
-            }
-            
-            ans = max(ans, res);
-        }
-        return ans;
+			}
+			freq[same]++;
+            res = max(res, freq[same]);
+		}
+        return res;
     }
 };
