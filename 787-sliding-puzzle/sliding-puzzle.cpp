@@ -9,34 +9,34 @@ using namespace std;
 
 class Solution {
 public:
-    // Chuyển vector<vector<int>> sang string
+    // Convert vector<vector<int>> to string
     string toString(const vector<vector<int>>& board) {
         string res;
         for (const auto& row : board) {
             for (int val : row) {
-                res += (val + '0'); // Chuyển số sang ký tự
+                res += (val + '0'); // Convert integer to character
             }
         }
         return res;
     }
 
     int slidingPuzzle(vector<vector<int>>& board) {
-        // Trạng thái đích
+        // Target state
         string goal = "123450";
-        // Trạng thái ban đầu
+        // Initial state
         string start = toString(board);
-        // Các bước di chuyển (tương ứng vị trí của số 0)
+        // Moves corresponding to the position of the zero
         vector<vector<int>> moves = {
-            {1, 3},          // 0 tại vị trí 0
-            {0, 2, 4},       // 0 tại vị trí 1
-            {1, 5},          // 0 tại vị trí 2
-            {0, 4},          // 0 tại vị trí 3
-            {1, 3, 5},       // 0 tại vị trí 4
-            {2, 4}           // 0 tại vị trí 5
+            {1, 3},          // 0 at position 0
+            {0, 2, 4},       // 0 at position 1
+            {1, 5},          // 0 at position 2
+            {0, 4},          // 0 at position 3
+            {1, 3, 5},       // 0 at position 4
+            {2, 4}           // 0 at position 5
         };
 
-        unordered_set<string> visited; // Để kiểm tra trạng thái đã xử lý
-        queue<pair<string, int>> q;    // BFS: {trạng thái hiện tại, số bước}
+        unordered_set<string> visited; // To check if a state has been processed
+        queue<pair<string, int>> q;    // BFS: {current state, number of steps}
         
         q.push({start, 0});
         visited.insert(start);
@@ -45,18 +45,18 @@ public:
             auto [current, steps] = q.front();
             q.pop();
 
-            // Kiểm tra trạng thái hoàn thành
+            // Check if the target state is reached
             if (current == goal) return steps;
 
-            // Tìm vị trí số 0
+            // Find the position of zero
             int zeroPos = current.find('0');
 
-            // Duyệt qua các bước di chuyển có thể
+            // Iterate through possible moves
             for (int move : moves[zeroPos]) {
                 string next = current;
-                swap(next[zeroPos], next[move]); // Di chuyển số 0
+                swap(next[zeroPos], next[move]); // Move the zero
 
-                // Nếu trạng thái mới chưa được xử lý
+                // If the new state has not been processed
                 if (!visited.count(next)) {
                     q.push({next, steps + 1});
                     visited.insert(next);
@@ -64,6 +64,6 @@ public:
             }
         }
 
-        return -1; // Không tìm thấy đường đi
+        return -1; // No solution found
     }
 };
