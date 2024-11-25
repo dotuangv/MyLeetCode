@@ -1,22 +1,29 @@
 class Solution {
 public:
+    struct VectorHash {
+        size_t operator()(const vector<vector<int>> &v) const {
+            size_t hash = 0;
+            size_t base = 6; // Cơ số 6 vì các giá trị trong vector nằm trong [0, 5]
+            size_t factor = 1;
 
-    string to_String(vector<vector<int>> &board){
-        string result = "";
-        for(int i = 0; i < 2; i++){
-            for(int j = 0; j < 3; j++) result.push_back(board[i][j] - '0');
+            for (const auto &row : v) {
+                for (int val : row) {
+                    hash += val * factor;
+                    factor *= base; // Nhân với cơ số để tạo sự khác biệt
+                }
+            }
+            return hash;
         }
-        return result;
-    }
+    };
 
     int slidingPuzzle(vector<vector<int>>& board) {
-        unordered_map<string, bool> check;
+        unordered_map<vector<vector<int>>, bool, VectorHash> check;
         vector<vector<int>> goal = {{1, 2, 3}, {4, 5, 0}};
         queue<pair<int, vector<vector<int>>>> q;
         int xd[] = {-1, 0, 1, 0};
         int yd[] = {0, -1, 0, 1};
         q.push({0, board});
-        check[to_String(board)] = true;
+        check[board] = true;
         while(!q.empty()){
             int g = q.front().first;
             vector<vector<int>> tmp = q.front().second;
@@ -37,10 +44,9 @@ public:
                 if(ii >= 0 && ii < 2 && jj >= 0 && jj < 3){
                     vector<vector<int>> res = tmp;
                     swap(res[x][y], res[ii][jj]);
-                    string s = to_String(res);
-                    if(!check[s]) {
+                    if(!check[res]) {
                         q.push({g + 1, res});
-                        check[s] = true;
+                        check[res] = true;
                     }
                 }
             }
