@@ -3,13 +3,13 @@ public:
     struct VectorHash {
         size_t operator()(const vector<vector<int>> &v) const {
             size_t hash = 0;
-            size_t base = 6; // Cơ số 6 vì các giá trị trong vector nằm trong [0, 5]
+            size_t base = 6;
             size_t factor = 1;
 
             for (const auto &row : v) {
                 for (int val : row) {
                     hash += val * factor;
-                    factor *= base; // Nhân với cơ số để tạo sự khác biệt
+                    factor *= base;
                 }
             }
             return hash;
