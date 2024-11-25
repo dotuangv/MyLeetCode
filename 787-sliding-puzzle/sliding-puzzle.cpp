@@ -29,7 +29,6 @@ public:
                     }
                 }
             }
-            // if(g >= 20) return -1;
             if(ok) return g;
             for(int i = 0; i < 4; i++){
                 int ii = x + xd[i], jj = y + yd[i];
