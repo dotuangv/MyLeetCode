@@ -16,7 +16,7 @@ public:
         }
         vector<vector<pair<int, int>>> vt(cnt);
         for(int i = 0; i < events.size(); i++){
-            cout << events[i][0] << " " << events[i][1] << " " << events[i][2] << "\n";
+            // cout << events[i][0] << " " << events[i][1] << " " << events[i][2] << "\n";
             vt[events[i][1]].push_back({events[i][0], events[i][2]});
         }
         vector<int> dp(cnt);
