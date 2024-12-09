@@ -11,7 +11,7 @@ public:
         dp[k - 1] = max(0LL, ans);
         for(int i = k; i < n; i++){
             ans = max({ans, pre[i] - pre[i - k] + dp[i - k], pre[i] - pre[i - k]});
-            dp[i] = max({0LL, pre[i] - pre[i - k] + dp[i - k], pre[i] - pre[i - k]});
+            dp[i] = max({dp[i], pre[i] - pre[i - k] + dp[i - k], pre[i] - pre[i - k]});
         }
         return ans;
     }
