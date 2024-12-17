@@ -1,14 +1,10 @@
 class Solution {
 public:
     string repeatLimitedString(string s, int repeatLimit) {
-        priority_queue<pair<int, int>> pq;
         string ans = "";
         vector<int> vt(26), cnt(26);
         for(auto &x: s){
             vt[x - 'a']++;
-        }
-        for(int i = 0; i < 26; i++){
-            pq.push({vt[i], i});
         }
         while(1){
             bool ok = false;
