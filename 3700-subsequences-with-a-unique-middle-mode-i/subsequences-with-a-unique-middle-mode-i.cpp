@@ -8,7 +8,7 @@ public:
         return (n * (n - 1)/2) % mod;
     }
     void update(int &ans, int x){
-        ans = (ans%mod + x%mod) % mod;
+        ans = (ans%mod + x%mod + mod) % mod;
     }
 
     int subsequencesWithMiddleMode(vector<int>& nums) {
@@ -42,16 +42,16 @@ public:
             update(ans, mul(l1, r0));
             for(int x = 0; x < k; x++){
                 if(x != nums[i]){
-                    ans = (ans - mul(mul(n - mp1[x] - mp1[nums[i]], mp1[nums[i]]), C2(mp2[x])) + mod) % mod;
-                    ans = (ans - mul(mul(mp1[x], mp1[nums[i]]), mul(mp2[x], m - mp2[x] - mp2[nums[i]])) - mul(mul(mp1[x], mp1[nums[i]]), C2(mp2[x])) + mod)%mod;
+                    update(ans, -mul(mul(n - mp1[x] - mp1[nums[i]], mp1[nums[i]]), C2(mp2[x])));
+                    update(ans, - mul(mul(mp1[x], mp1[nums[i]]), mul(mp2[x], m - mp2[x] - mp2[nums[i]])) - mul(mul(mp1[x], mp1[nums[i]]), C2(mp2[x])));
                 }
             }
             // 0 1 1
             update(ans, mul(l0, r1));
             for(int x = 0; x < k; x++){
                 if(x != nums[i]){
-                    ans = (ans - mul(mul(m - mp2[x] - mp2[nums[i]], mp2[nums[i]]), C2(mp1[x])) + mod) % mod;
-                    ans = (ans - mul(mul(mp2[x], mp2[nums[i]]), mul(mp1[x], n - mp1[x] - mp1[nums[i]])) - mul(mul(mp2[x], mp2[nums[i]]), C2(mp1[x])) + mod)%mod;
+                    update(ans, - mul(mul(m - mp2[x] - mp2[nums[i]], mp2[nums[i]]), C2(mp1[x])));
+                    update(ans, - mul(mul(mp2[x], mp2[nums[i]]), mul(mp1[x], n - mp1[x] - mp1[nums[i]])) - mul(mul(mp2[x], mp2[nums[i]]), C2(mp1[x])));
                 }
             }
             // mode mid = 3
