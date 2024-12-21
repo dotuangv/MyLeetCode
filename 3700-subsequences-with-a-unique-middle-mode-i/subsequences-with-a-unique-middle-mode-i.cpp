@@ -7,8 +7,12 @@ public:
     long long C2(long long n){
         return (n * (n - 1)/2) % mod;
     }
+    void update(int &ans, int x){
+        ans = (ans%mod + x%mod) % mod;
+    }
+
     int subsequencesWithMiddleMode(vector<int>& nums) {
-        long long ans = 0;
+        int ans = 0;
         vector<pair<int, int>> vt;
         for(int i = 0; i < nums.size(); i++){
             vt.push_back({nums[i], i});
@@ -35,7 +39,7 @@ public:
             long long r0 = C2(m - mp2[nums[i]]), r1 = mul(mp2[nums[i]], m - mp2[nums[i]]), r2 = C2(mp2[nums[i]]);
             // mode mid = 2
             // 1 1 0
-            ans += mul(l1, r0);
+            update(ans, mul(l1, r0));
             for(int x = 0; x < k; x++){
                 if(x != nums[i]){
                     ans = (ans - mul(mul(n - mp1[x] - mp1[nums[i]], mp1[nums[i]]), C2(mp2[x])) + mod) % mod;
@@ -43,8 +47,7 @@ public:
                 }
             }
             // 0 1 1
-            ans += mul(l0, r1);
-            ans %= mod;
+            update(ans, mul(l0, r1));
             for(int x = 0; x < k; x++){
                 if(x != nums[i]){
                     ans = (ans - mul(mul(m - mp2[x] - mp2[nums[i]], mp2[nums[i]]), C2(mp1[x])) + mod) % mod;
@@ -53,25 +56,19 @@ public:
             }
             // mode mid = 3
             // 2 1 0
-            ans += mul(l2, r0);
-            ans %= mod;
+            update(ans, mul(l2, r0));
             // 0 1 2
-            ans += mul(l0, r2);
-            ans %= mod;
+            update(ans, mul(l0, r2));
             // 1 1 1
-            ans += mul(l1, r1);
-            ans %= mod;
+            update(ans, mul(l1, r1));
             // mode mid = 4
             // 2 1 1
-            ans += mul(l2, r1);
-            ans %= mod;
+            update(ans, mul(l2, r1));
             // 1 1 2
-            ans += mul(l1, r2);
-            ans %= mod;
+            update(ans, mul(l1, r2));
             // mode mid = 5
             // 2 1 2
-            ans += mul(l2, r2);
-            ans %= mod;
+            update(ans, mul(l2, r2));
         }
         return ans;
     }
