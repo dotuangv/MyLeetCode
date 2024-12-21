@@ -38,10 +38,8 @@ public:
             ans += mul(l1, r0);
             for(int x = 0; x < k; x++){
                 if(x != nums[i]){
-                    long long s = 0, s2 = 0;
-                    if(mp2[x] > 1) s = C2(mp2[x]);
-                    if(mp1[x] > 1) ans = (ans - mul(mul(m - mp2[x] - mp2[nums[i]], mp2[nums[i]]), C2(mp1[x])) + mod) % mod;
-                    ans = (ans - mul(mul(mp1[x], mp1[nums[i]]), mul(mp2[x], m - mp2[x] - mp2[nums[i]])) - mul(mul(mp1[x], mp1[nums[i]]), s) + mod)%mod;
+                    ans = (ans - mul(mul(n - mp1[x] - mp1[nums[i]], mp1[nums[i]]), C2(mp2[x])) + mod) % mod;
+                    ans = (ans - mul(mul(mp1[x], mp1[nums[i]]), mul(mp2[x], m - mp2[x] - mp2[nums[i]])) - mul(mul(mp1[x], mp1[nums[i]]), C2(mp2[x])) + mod)%mod;
                 }
             }
             // 0 1 1
@@ -49,10 +47,8 @@ public:
             ans %= mod;
             for(int x = 0; x < k; x++){
                 if(x != nums[i]){
-                    long long s = 0;
-                    if(mp1[x] > 1) s = C2(mp1[x]);
-                    if(mp2[x] > 1) ans = (ans - mul(mul(n - mp1[x] - mp1[nums[i]], mp1[nums[i]]), C2(mp2[x])) + mod) % mod;
-                    ans = (ans - mul(mul(mp2[x], mp2[nums[i]]), mul(mp1[x], n - mp1[x] - mp1[nums[i]])) - mul(mul(mp2[x], mp2[nums[i]]), s) + mod)%mod;
+                    ans = (ans - mul(mul(m - mp2[x] - mp2[nums[i]], mp2[nums[i]]), C2(mp1[x])) + mod) % mod;
+                    ans = (ans - mul(mul(mp2[x], mp2[nums[i]]), mul(mp1[x], n - mp1[x] - mp1[nums[i]])) - mul(mul(mp2[x], mp2[nums[i]]), C2(mp1[x])) + mod)%mod;
                 }
             }
             // mode mid = 3
