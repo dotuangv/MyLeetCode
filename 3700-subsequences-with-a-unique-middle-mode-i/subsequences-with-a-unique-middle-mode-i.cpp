@@ -34,7 +34,7 @@ public:
             long long l0 = C2(n - mp1[nums[i]]), l1 = mul(mp1[nums[i]], n - mp1[nums[i]]), l2 = C2(mp1[nums[i]]);
             long long r0 = C2(m - mp2[nums[i]]), r1 = mul(mp2[nums[i]], m - mp2[nums[i]]), r2 = C2(mp2[nums[i]]);
             // mode mid = 2
-            // 1 1 0
+            // 1 1 0 and 0 1 1
             ans = (ans + mul(l1, r0) + mul(l0, r1))%mod;
             for(int x = 0; x < k; x++){
                 if(x != nums[i]){
@@ -44,7 +44,6 @@ public:
                     ans = (ans - mul(mul(mp2[x], mp2[nums[i]]), mul(mp1[x], n - mp1[x] - mp1[nums[i]])) - mul(mul(mp2[x], mp2[nums[i]]), C2(mp1[x])) + mod)%mod;
                 }
             }
-            // 0 1 1
             // mode mid = 3
             // 2 1 0
             ans = (ans + mul(l2, r0))%mod;
