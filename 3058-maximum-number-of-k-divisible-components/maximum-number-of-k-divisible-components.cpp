@@ -2,9 +2,7 @@ class Solution {
 public:
     int ans = 0;
     int dfs(int i, vector<vector<int>>& path, vector<int>& values, vector<bool> &visited, int k){
-        if(visited[i]){
-            return 0;
-        }
+        if(visited[i]) return 0;
         visited[i] = true;
         int sum = values[i] % k;
         for(int j = 0; j < path[i].size(); j++){
