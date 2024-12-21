@@ -1,13 +1,12 @@
 class Solution {
 public:
     int ans = 0;
-    int dfs(int i, vector<vector<int>>& path, vector<int>& values, vector<bool> &visited, int k){
+    long long dfs(int i, vector<vector<int>>& path, vector<int>& values, vector<bool> &visited, int k){
         if(visited[i]) return 0;
         visited[i] = true;
-        int sum = values[i] % k;
+        long long sum = values[i];
         for(int j = 0; j < path[i].size(); j++){
             sum += dfs(path[i][j], path, values, visited, k);
-            sum %= k;
         }
         if(sum % k == 0){
             ans++;
