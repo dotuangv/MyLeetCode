@@ -6,7 +6,7 @@ public:
         for(int i = 1; i <= n; i++){
             pre[i] = pre[i - 1] + nums[i - 1];
         }
-        vector<vector<pair<int, int>>> dp(n + 1, vector<pair<int, int>> (3, {0, -1}));
+        pair<int, int> dp[n + 1][3];
         for(int i = 0; i < 3; i++){
             dp[(i + 1)*k][i] = {pre[(i + 1)*k], i*k + 1};
             for(int j = (i + 1)*k + 1; j <= n; j++){
