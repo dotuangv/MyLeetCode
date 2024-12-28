@@ -2,7 +2,8 @@ class Solution {
 public:
     vector<int> maxSumOfThreeSubarrays(vector<int>& nums, int k) {
         int n = nums.size();
-        vector<int> pre(n + 1);
+        int pre[n + 1];
+        pre[0] = 0;
         for(int i = 1; i <= n; i++){
             pre[i] = pre[i - 1] + nums[i - 1];
         }
