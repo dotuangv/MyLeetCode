@@ -1,27 +1,46 @@
 class Solution {
 public:
-    bool isPrefixAndSuffix(string str1, string str2){
-        if(str1.size() > str2.size()) return false;
-        int res = 0, j = 0;
-        for(int i = 0; i < str1.size(); i++){
-            if(str1[i] == str2[j]) j++;
-            else break;
+    struct pair_hash {
+        template <class T1, class T2>
+        size_t operator()(const pair<T1, T2>& p) const {
+            auto hash1 = hash<T1>{}(p.first);
+            auto hash2 = hash<T2>{}(p.second);
+            return hash1 ^ (hash2 << 1); 
         }
-        if(j == str1.size()) res++;
-        j = str2.size() - 1;
-        for(int i = str1.size() - 1; i >= 0; i--){
-            if(str1[i] == str2[j]) j--;
-            else break;
-        }
-        if(str2.size() - j - 1 == str1.size()) res++;
-        return res == 2; 
+    };
+    struct TrieNode {
+        unordered_map<pair<char, char>, TrieNode*, pair_hash> children; 
+        int cnt = 0;
+    };
+
+    TrieNode* root;
+
+    Solution() {
+        root = new TrieNode();
     }
+
+    int Insert(string& s) {
+        TrieNode* node = root;
+        int res = 0, i = 0, j = s.size() - 1;
+
+        while (i < s.size()) {
+            pair<char, char> key = {s[i], s[j]};
+            if (node->children.find(key) == node->children.end()) {
+                node->children[key] = new TrieNode();
+            }
+            node = node->children[key];
+            res += node->cnt;
+            i++;
+            j--;
+        }
+        node->cnt++;
+        return res;
+    }
+
     int countPrefixSuffixPairs(vector<string>& words) {
         int ans = 0;
-        for(int i = 0; i < words.size(); i++){
-            for(int j = i + 1; j < words.size(); j++){
-                if(isPrefixAndSuffix(words[i], words[j])) ans++;
-            }
+        for (auto& word : words) {
+            ans += Insert(word);
         }
         return ans;
     }
