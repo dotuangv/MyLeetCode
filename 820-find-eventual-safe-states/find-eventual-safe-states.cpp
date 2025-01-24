@@ -1,44 +1,48 @@
 class Solution {
 public:
-    void dfs(int i, vector<vector<int>> &graph, vector<bool> &visited, vector<bool> &safe)
+    bool dfs(int node,vector<int> &visited,vector<int> &pathVisited,vector<int> &checked,vector<vector<int>> &graph)
     {
-        visited[i] = true;
-        bool ans = true;
-        for(int j = 0; j < graph[i].size(); j++)
+        visited[node]=1;
+        pathVisited[node]=1;
+
+        for(int nei : graph[node])
         {
-            if(!visited[graph[i][j]])
-                dfs(graph[i][j], graph, visited, safe);
-            if(!safe[graph[i][j]]) ans = false;
+            if(!visited[nei])
+            {
+                if(dfs(nei,visited,pathVisited,checked,graph))
+                {
+                    return true;
+                }
+            }
+              else if(pathVisited[nei]==1)
+                {
+                    return true;
+                }
         }
-        safe[i] = ans;
+        checked[node]=1;
+        pathVisited[node]=0;
+        return false;
     }
-
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
-        ios::sync_with_stdio(0);
-        cin.tie(0);
-        cout.tie(0);
-        vector<bool> visited(graph.size());
-        vector<bool> safe(graph.size());
-        vector<int> ans;
-        for(int i = 0; i < graph.size(); i++)
-        {
-            if(graph[i].empty())
-            {
-                safe[i] = true;
-                visited[i] = true;
-            }
-        }
-        
-        for(int i = 0; i < graph.size(); i++)
-        {
-            if(!visited[i])
-            {
-                dfs(i, graph, visited, safe);
-            }
-            if(safe[i]) ans.push_back(i);
-        }
-        
-        return ans;
+     int n = graph.size();
+     vector<int> visited(n,0);
+     vector<int> pathVisited(n,0);
+     vector<int> checked(n,0);
+     vector<int> safe;
 
+     for(int i=0;i<n;i++)
+     {
+        if(!visited[i])
+        {
+            dfs(i,visited,pathVisited,checked,graph);
+        }
+     }
+
+     for(int i=0;i<n;i++)
+     {
+        if(checked[i]==1)
+        safe.push_back(i);
+     }
+     return safe;
     }
 };
