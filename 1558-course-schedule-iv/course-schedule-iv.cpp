@@ -1,40 +1,45 @@
+static auto init = []() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cout.tie(nullptr);
+  return nullptr;
+}();
+
 class Solution {
 public:
-    // Performs DFS and returns true if there's a path between src and target
-    // and false otherwise.
-    bool isPrerequisite(unordered_map<int, vector<int>>& adjList,
-                        vector<bool>& visited, int src, int target) {
-        visited[src] = 1;
+  vector<bool> checkIfPrerequisite(int numCourses, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {
+    auto prereq_for = vector<vector<int>>(numCourses);
+    for (const auto& prereq : prerequisites)
+        prereq_for[prereq.front()].push_back(prereq.back());
+    auto memo = vector<bitset<101>>(numCourses, not_evaluated);
 
-        if (src == target) {
-            return true;
-        }
-
-        int answer = false;
-        for (auto adj : adjList[src]) {
-            if (!visited[adj]) {
-                answer =
-                    answer || isPrerequisite(adjList, visited, adj, target);
-            }
-        }
-        return answer;
+    auto answer = vector<bool>{};
+    answer.reserve(size(queries));
+    for (auto& query : queries) {
+      auto course1 = query.front();
+      auto course2 = query.back();
+      answer.push_back(evaluate_prereq_query(
+        course1, course2, memo, prereq_for));
     }
+    return answer;
+  }
+private:
+  constexpr static auto not_evaluated = bitset<101>(1) << 100;
+  bool evaluate_prereq_query(int course1, int course2, vector<bitset<101>>& memo,
+      const vector<vector<int>>& prereq_for) {
+      return prereq_for_set(course1, memo, prereq_for)[course2];
+   }
 
-    vector<bool> checkIfPrerequisite(int numCourses,
-                                     vector<vector<int>>& prerequisites,
-                                     vector<vector<int>>& queries) {
-        unordered_map<int, vector<int>> adjList;
-        for (auto edge : prerequisites) {
-            adjList[edge[0]].push_back(edge[1]);
-        }
+  bitset<101>& prereq_for_set(int course, vector<bitset<101>>& memo,
+      const vector<vector<int>>& prereq_for) {
+    auto& prereq_set = memo[course];
+    if (prereq_set != not_evaluated) return prereq_set;
 
-        vector<bool> answer;
-        for (auto q : queries) {
-            // Reset the visited array for each query.
-            vector<bool> visited(numCourses, false);
-            answer.push_back(isPrerequisite(adjList, visited, q[0], q[1]));
-        }
-
-        return answer;
+    prereq_set.reset();
+    for (auto dependent_course : prereq_for[course]) {
+      prereq_set.set(dependent_course);
+      prereq_set |= prereq_for_set(dependent_course, memo, prereq_for);
     }
+    return prereq_set;
+  }
 };
