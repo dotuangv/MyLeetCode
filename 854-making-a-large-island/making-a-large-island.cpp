@@ -26,8 +26,6 @@ public:
         return true;
     }
     int largestIsland(vector<vector<int>>& grid) {
-        std::ios::sync_with_stdio(false);
-        std::cin.tie(nullptr);
         int n = grid.size();
         parent.resize(n*n);
         sz.resize(n*n);
