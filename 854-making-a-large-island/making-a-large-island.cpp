@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int parent[250001], sz[250001];
+    vector<int> parent, sz;
     int dx[4] = {-1, 0, 0, 1};
     int dy[4] = {0, -1, 1, 0};
     void make_set(int v) {
@@ -29,6 +29,8 @@ public:
         std::ios::sync_with_stdio(false);
         std::cin.tie(nullptr);
         int n = grid.size();
+        parent.resize(n*n);
+        sz.resize(n*n);
         for(int i = 0; i < n; i++){
             for(int j = 0; j < n; j++){
                 if(grid[i][j]) make_set(n * i + j);
