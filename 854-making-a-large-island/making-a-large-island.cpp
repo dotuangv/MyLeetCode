@@ -1,3 +1,11 @@
+#pragma GCC optimize("O3,unroll-loops")
+#pragma GCC target("avx2,abm,bmi2")
+
+static const auto io_sync_off = []() {
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+    return nullptr;
+}();
 class Solution {
 public:
     int parent[250001], sz[250001];
