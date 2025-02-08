@@ -1,35 +1,25 @@
 class NumberContainers {
 public:
-    // Constructor
-    // The data structures are already initialized as
-    // part of the member variable declarations.
-    NumberContainers() {}
-
-    void change(int index, int number) {
-        if (indexToNumbers.find(index) != indexToNumbers.end()) {
-            int previousNumber = indexToNumbers[index];
-            numberToIndices[previousNumber].erase(index);
-            if (numberToIndices[previousNumber].empty()) {
-                numberToIndices.erase(previousNumber);
-            }
-        }
-        indexToNumbers[index] = number;
-        numberToIndices[number].insert(index);
+  void change(int index, int number) {
+    entries[index] = number;
+    number_to_indexes[number].push(index);
+  }
+  
+  int find(int number) {
+    if (auto find_it = number_to_indexes.find(number);
+        find_it == end(number_to_indexes)) {
+      return -1;
+    } else {
+      auto& q = find_it->second;
+      while (!empty(q) && entries[q.top()] != number) q.pop();
+      return empty(q) ? -1 : q.top();
     }
-
-    int find(int number) {
-        if (numberToIndices.find(number) != numberToIndices.end()) {
-            // Get the smallest index
-            return *numberToIndices[number].begin();
-        }
-        return -1;
-    }
+  }
 
 private:
-    // Map from number to set of indices
-    unordered_map<int, set<int>> numberToIndices;
-    // Map from index to number
-    unordered_map<int, int> indexToNumbers;
+  unordered_map<int, priority_queue<int, vector<int>, greater<int>>>
+      number_to_indexes;
+  unordered_map<int, int> entries;
 };
 
 /**
