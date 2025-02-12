@@ -9,12 +9,12 @@ public:
         return sum;
     }
     int maximumSum(vector<int>& nums) {
-        unordered_map<int, vector<int>> mp;
+        vector<vector<int>> mp(82);
         for(int i = 0; i < nums.size(); i++){
             mp[convert(nums[i])].push_back(nums[i]);
         }
         int ans = -1;
-        for(auto &[x, y]: mp){
+        for(auto &y: mp){
             if(y.size() < 2) continue;
             int Max1 = max(y[0], y[1]), Max2 = min(y[0], y[1]);
             for(int i = 2; i < y.size(); i++){
