@@ -1,17 +1,18 @@
 class Solution {
 public:
     int numOfSubarrays(vector<int>& arr) {
-        int mod = 1e9 + 7, ans = 0;
-        vector<vector<int>> dp(arr.size() + 1, vector<int> (2));
+        int mod = 1e9 + 7, ans = 0, odd = 0, even = 0, teven, todd;
         for(int i = 1; i <= arr.size(); i++){
             if(arr[i - 1]%2){
-                dp[i][0] = dp[i - 1][1];
-                dp[i][1] = dp[i - 1][0] + 1;
+                teven = odd;
+                todd = even + 1;
             }else{
-                dp[i][0] = dp[i - 1][0] + 1;
-                dp[i][1] = dp[i - 1][1];
+                teven = even + 1;
+                todd = odd;
             }
-            ans = (ans + dp[i][1])%mod;
+            odd = todd;
+            even = teven;
+            ans = (ans + odd)%mod;
         }
         return ans;
     }
