@@ -1,14 +1,14 @@
 class Solution {
 public:
     vector<int> closestPrimes(int left, int right) {
-        vector<bool> prime(right + 1, true);
+        vector<bool> prime(right + 1);
         for(long long i = 2; i <= right; i++){
-            if(prime[i]){
-                for(long long j = i * i; j <= right; j += i) prime[j] = false;
+            if(!prime[i]){
+                for(long long j = i * i; j <= right; j += i) prime[j] = true;
             }
         }
         vector<int> vt, ans;
-        for(int i = 2; i <= right; i++) if(prime[i]) vt.push_back(i);
+        for(int i = 2; i <= right; i++) if(!prime[i]) vt.push_back(i);
         int n = vt.size();
         for(int i = 0; i < n - 1; i++){
             if(vt[i] >= left && vt[i + 1] <= right){
