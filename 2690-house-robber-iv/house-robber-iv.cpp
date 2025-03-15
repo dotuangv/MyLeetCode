@@ -7,11 +7,13 @@ public:
                 k--;
                 i += 2;
             }else i++;
+            if(k == 0) return true;
         }
-        return k <= 0;
+        return false;
     }
     int minCapability(vector<int>& nums, int k) {
-        int l = 1, r = 1e9;
+        int l = *min_element(nums.begin(), nums.end());
+        int r = *max_element(nums.begin(), nums.end());
         while(r > l + 1){
             int mid = (l + r)/2;
             if(isGood(mid, nums, k)) r = mid;
