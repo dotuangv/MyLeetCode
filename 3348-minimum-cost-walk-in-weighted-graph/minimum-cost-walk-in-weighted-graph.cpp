@@ -1,3 +1,8 @@
+static auto init = []() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  return nullptr;
+}();
 class DSU {
 private:
     vector<int> parent, rank, cost;
