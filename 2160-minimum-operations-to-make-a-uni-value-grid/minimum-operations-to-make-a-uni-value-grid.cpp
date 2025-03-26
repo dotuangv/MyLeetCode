@@ -3,7 +3,7 @@ public:
 
     int minOperations(vector<vector<int>>& grid, int x) {
         int n = grid.size() * grid[0].size();
-        vector<long long> pre(n), suf(n), vt;
+        vector<int> pre(n), suf(n), vt;
         for(auto &x: grid){
             for(auto &y: x) vt.push_back(y);
         }
@@ -16,7 +16,7 @@ public:
             suf[i] = suf[i + 1] + (vt[i + 1] - vt[i])/x * (n - i - 1);
         }
 
-        long long ans = 1e9;
+        int ans = 1e9;
         for(int i = 0; i < n; i++){
             ans = min(ans, pre[i] + suf[i]);
         }
