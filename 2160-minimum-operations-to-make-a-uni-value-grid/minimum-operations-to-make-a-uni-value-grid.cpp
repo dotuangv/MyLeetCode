@@ -3,11 +3,16 @@ public:
 
     int minOperations(vector<vector<int>>& grid, int x) {
         int n = grid.size() * grid[0].size();
-        vector<int> pre(n), suf(n), vt;
+        vector<int> pre(n), suf(n), vt, mp(10001);
         for(auto &x: grid){
-            for(auto &y: x) vt.push_back(y);
+            for(auto &y: x) mp[y]++;
         }
-        sort(vt.begin(), vt.end());
+        for(int i = 1; i <= 10000; i++){
+            while(mp[i]){
+                vt.push_back(i);
+                mp[i]--;
+            }
+        }
         for(int i = 1; i < n; i++){
             if((vt[i] - vt[i - 1])%x) return -1;
             pre[i] = pre[i - 1] + (vt[i] - vt[i - 1])/x * i;
