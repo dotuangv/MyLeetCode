@@ -7,10 +7,10 @@ public:
         for(int i = nums.size() - 2; i >= 0; i--){
             Max[i] = max(Max[i + 1], (long long)nums[i]);
         }
-        for(int i = 0; i < nums.size(); i++){
-            for(int j = i + 1; j < nums.size() - 1; j++){
-                ans = max(ans, (nums[i] - nums[j]) * Max[j + 1]);
-            }
+        long long Max2 = nums[0];
+        for(int i = 1; i < nums.size() - 1; i++){
+            ans = max(ans, (Max2 - nums[i]) * Max[i + 1]);
+            Max2 = max(Max2, (long long)nums[i]);
         }
         return ans;
     }
