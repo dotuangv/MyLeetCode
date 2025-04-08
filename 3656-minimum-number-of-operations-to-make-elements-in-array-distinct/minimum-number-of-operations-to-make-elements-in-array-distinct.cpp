@@ -1,17 +1,17 @@
 class Solution {
 public:
     int minimumOperations(vector<int>& nums) {
-        int ans = 0;
-        for(int i = 0; i < nums.size(); i+=3){
-            unordered_map<int, int> mp;
-            bool ok = true;
-            for(int j = i; j < nums.size(); j++){
-                mp[nums[j]]++;
-                if(mp[nums[j]] >= 2) ok = false;
-            }
-            if(ok) return ans;
-            else ans++;
+        int cnt = 0, temp;
+        while (true) {
+            unordered_map<int, int> mpp;
+            temp = 0;
+            for (int num : nums)
+                if (++mpp[num] == 2) temp++;
+
+            if (temp == 0) break;
+            nums.erase(nums.begin(), nums.begin() + min(3, (int)nums.size()));
+            cnt++;
         }
-        return ans;
+        return cnt;
     }
 };
