@@ -3,7 +3,7 @@ public:
 
     long long countGood(vector<int>& nums, int k) {
         long long ans = 0, l = 0, r = l + 1, n = nums.size(), cnt = 0;
-        unordered_map<int, long long> mp;
+        unordered_map<int, int> mp;
         mp[nums[l]]++;
         while(r < n){
             cnt += mp[nums[r]];
