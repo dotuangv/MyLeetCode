@@ -8,16 +8,13 @@ public:
         while(r < n){
             cnt += mp[nums[r]];
             mp[nums[r]]++;
-            if(cnt < k) r++;
-            else{
-                while(cnt >= k){
-                    ans += n - r;
-                    cnt += 1 - mp[nums[l]];
-                    mp[nums[l]]--;
-                    l++;
-                }
-                r++;
+            while(cnt >= k){
+                ans += n - r;
+                cnt += 1 - mp[nums[l]];
+                mp[nums[l]]--;
+                l++;
             }
+            r++;
         }
         return ans;
 
