@@ -5,7 +5,7 @@ public:
         vector<int> candies(n, 1);
         vector<pair<int, int>> p;
         for(int i = 0; i < n; i++){
-            p.push_back(make_pair(ratings[i], i));
+            p.push_back({ratings[i], i});
         }
         sort(p.begin(), p.end());
         int ans = 1;
