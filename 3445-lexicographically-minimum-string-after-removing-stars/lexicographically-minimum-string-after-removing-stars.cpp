@@ -16,7 +16,7 @@ public:
 
         string ans = "";
         for(int i = 0; i < s.size(); i++){
-            if(mp[i]) ans.push_back(s[i]);
+            if(mp[i]) ans += s[i];
         }
         return ans;
     }
