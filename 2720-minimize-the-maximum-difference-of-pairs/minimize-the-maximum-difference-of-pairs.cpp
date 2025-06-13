@@ -1,35 +1,34 @@
 class Solution {
 public:
-    // Find the number of valid pairs by greedy approach
-    int countValidPairs(vector<int>& nums, int threshold) {
-        int index = 0, count = 0;
-        while (index < nums.size() - 1) {
-            // If a valid pair is found, skip both numbers.
-            if (nums[index + 1] - nums[index] <= threshold) {
-                count++;
-                index++;
-            }
-            index++;
-        }
-        return count;
-    }
-
     int minimizeMax(vector<int>& nums, int p) {
+        if (p == 0) return 0;
+        
         sort(nums.begin(), nums.end());
-        int n = nums.size();
-        int left = 0, right = nums[n - 1] - nums[0];
+        
+        int minThrehold = 0;
+        int maxThrehold = nums[nums.size() - 1] - nums[0];
 
-        while (left < right) {
-            int mid = left + (right - left) / 2;
+        while (minThrehold < maxThrehold) {
+            int candidateThrehold = minThrehold + (maxThrehold - minThrehold) / 2; // middle threshold
+            // check how many pairs we can pick with this threshold
 
-            // If there are enough pairs, look for a smaller threshold.
-            // Otherwise, look for a larger threshold.
-            if (countValidPairs(nums, mid) >= p) {
-                right = mid;
-            } else {
-                left = mid + 1;
+            int pairs = 0;
+
+            // greedily pick pairs
+            for (int i = 1; i < nums.size(); ++i) {
+                if (candidateThrehold >= nums[i] - nums[i - 1]) {
+                    ++pairs;
+                    ++i; // you have picked i and i -1, you can't pick [i + 1, i] pair anymore
+                }
+            }
+
+            if (pairs >= p) { // we are being to loose on the threshold and have too many pairs, be more strict on the threhold
+                maxThrehold = candidateThrehold;
+            } else { // we are being too strict about threshold and we do not have enough pairs, be more loose on threshold
+                minThrehold = candidateThrehold + 1;
             }
         }
-        return left;
+
+        return minThrehold;
     }
 };
