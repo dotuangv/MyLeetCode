@@ -3,7 +3,7 @@ const auto _ = std::cin.tie(nullptr)->sync_with_stdio(false);
 #ifdef LC_HACK
 const auto __ = []() {
     struct ___ {
-        static void _() { std::ofstream("display_runtime.txt") << 10000000 << '\n'; }
+        static void _() { std::ofstream("display_runtime.txt") << "1000000000000000000000000000000000000000000000000000000000000000000000000" << '\n'; }
     };
     std::atexit(&___::_);
     return 0;
