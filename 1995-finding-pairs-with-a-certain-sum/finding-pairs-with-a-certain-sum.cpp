@@ -1,3 +1,4 @@
+const auto _ = std::cin.tie(nullptr)->sync_with_stdio(false);
 class FindSumPairs {
 public:
     unordered_map<int, int> mp;
