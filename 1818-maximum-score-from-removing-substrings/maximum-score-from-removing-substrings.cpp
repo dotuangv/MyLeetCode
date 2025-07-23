@@ -1,64 +1,43 @@
 class Solution {
 public:
+    int maximumGain(string s, int x, int y) {
+        // Ensure "ab" always has more points than "ba"
+        if (x < y) {
+            // Swap points
+            int temp = x;
+            x = y;
+            y = temp;
+            // Reverse the string to maintain logic
+            reverse(s.begin(), s.end());
+        }
 
-    int Solve(string &s, stack<char> &st, int x, int y, bool opt)
-    {
-        int i = 0, ans = 0;
-        while(i < s.size())
-        {
-            st.push(s[i]);
-            i++;
-            if(y >= x) // xóa ba
-            {
-                while(!st.empty() && st.top() == 'b')
-                {
-                    st.pop();
-                    if(i < s.size() && s[i] == 'a')
-                    {
-                        if(opt) ans += y;
-                        else ans += x;
-                        i++;
-                    }else
-                    {
-                        st.push('b');
-                        break;
-                    }
+        int aCount = 0, bCount = 0, totalPoints = 0;
+
+        for (int i = 0; i < s.size(); ++i) {
+            char currentChar = s[i];
+
+            if (currentChar == 'a') {
+                ++aCount;
+            } else if (currentChar == 'b') {
+                if (aCount > 0) {
+                    // Can form "ab", remove it and add points
+                    --aCount;
+                    totalPoints += x;
+                } else {
+                    // Can't form "ab", keep 'b' for potential future "ba"
+                    ++bCount;
                 }
-            }else // xóa ab
-            {
-                while(!st.empty() && st.top() == 'a')
-                {
-                    st.pop();
-                    if(i < s.size() && s[i] == 'b')
-                    {
-                        if(opt) ans += x;
-                        else ans += y;
-                        i++;
-                    }else
-                    {
-                        st.push('a');
-                        break;
-                    }
-                }
+            } else {
+                // Non 'a' or 'b' character encountered
+                // Calculate points for any remaining "ba" pairs
+                totalPoints += min(bCount, aCount) * y;
+                // Reset counters for next segment
+                aCount = bCount = 0;
             }
         }
-        return ans;
-    }
+        // Calculate points for any remaining "ba" pairs at the end
+        totalPoints += min(bCount, aCount) * y;
 
-    int maximumGain(string s, int x, int y) {
-        stack<char> st;
-        int ans = Solve(s, st, x, y, true);
-        string str ="";
-        while(!st.empty())
-        {
-            str.push_back(st.top());
-            st.pop();
-        }
-        reverse(str.begin(), str.end());
-        // cout << str << "\n";
-        ans += Solve(str, st, y, x, false);
-        return ans;
-        
+        return totalPoints;
     }
-    
 };
